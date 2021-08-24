@@ -18,6 +18,8 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
+import GlobalComponents from 'components/global.js'
+
 import * as filters from './filters' // global filters
 
 /**
@@ -37,6 +39,9 @@ Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
+
+// 注册全局自定义组件
+Vue.use(GlobalComponents)
 
 // register global utility filters
 Object.keys(filters).forEach(key => {
