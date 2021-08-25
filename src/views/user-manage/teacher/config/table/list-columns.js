@@ -14,7 +14,21 @@ export const nameColumn = {
 
 export const imageColumn = {
   prop: 'image',
-  label: '头像'
+  label: '头像',
+  scopedSlots: h => ({
+    default({ row }) {
+      return h('image-view', {
+        props: {
+          src: row.image,
+          fit: 'cover'
+        },
+        style: {
+          width: '60px',
+          height: '60px'
+        }
+      })
+    }
+  })
 }
 
 export const statusColumn = {
@@ -59,13 +73,13 @@ export const numColumn = {
 export const agentColumn = {
   prop: 'agent',
   label: '经销商',
-  formatter: (row) => formatNormalize(row.agent)
+  formatter: (row) => formatNormalize(row?.agent?.name)
 }
 
 export const gradesColumn = {
   prop: 'grades',
   label: '负责的年级组',
-  formatter: (row) => formatNormalize(row.grades)
+  formatter: (row) => formatNormalize(row?.grades?.name)
 }
 
 export default [
