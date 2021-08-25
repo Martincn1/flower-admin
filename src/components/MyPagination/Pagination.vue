@@ -36,10 +36,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-.pagination.el-pagination {
-  padding: 15px 0;
-  text-align: right;
-}
-</style>

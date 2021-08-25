@@ -15,7 +15,7 @@ const userManageRouter = {
   children: [
     {
       path: '/userManage/member',
-      component: () => import('views/user-manage/tinymce'),
+      component: () => import('views/user-manage/member'),
       name: 'UserManageMember',
       meta: { title: '会员管理' }
     },

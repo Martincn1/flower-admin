@@ -18,12 +18,12 @@ const componentsRouter = {
       name: 'TinymceDemo',
       meta: { title: 'tinymce' }
     },
-    {
-      path: 'markdown',
-      component: () => import('@/views/components-demo/markdown'),
-      name: 'MarkdownDemo',
-      meta: { title: 'markdown' }
-    },
+    // {
+    //   path: 'markdown',
+    //   component: () => import('@/views/components-demo/markdown'),
+    //   name: 'MarkdownDemo',
+    //   meta: { title: 'markdown' }
+    // },
     {
       path: 'json-editor',
       component: () => import('@/views/components-demo/json-editor'),
