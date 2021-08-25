@@ -12,6 +12,10 @@
       <base-select
         v-model="searchObj.grade_id"
         placeholder="请选择年级"
+        filterable
+        remote
+        reserve-keyword
+        :remote-method="(name) => remoteHandler(name, commonRequestEnum.GRADE)"
         :options="gradeList"
         :key-values="{value: 'id', label: 'name'}"
       />
@@ -20,6 +24,10 @@
       <base-select
         v-model="searchObj.teacher_id"
         placeholder="请选择教师"
+        filterable
+        remote
+        reserve-keyword
+        :remote-method="(name) => remoteHandler(name, commonRequestEnum.TEACHER)"
         :options="teacherList"
         :key-values="{value: 'id', label: 'name'}"
       />
@@ -28,6 +36,10 @@
       <base-select
         v-model="searchObj.agent_id"
         placeholder="请选择经销商"
+        filterable
+        remote
+        reserve-keyword
+        :remote-method="(name) => remoteHandler(name, commonRequestEnum.AGENT)"
         :options="agentList"
         :key-values="{value: 'id', label: 'name'}"
       />
@@ -63,27 +75,50 @@ import { LINE_MODE_MAP } from 'enums/user-manage/index'
 
 import searchMixins from 'mixins/search-mixins'
 
+import { COMMON_REQUEST_ENUM } from 'config/common'
+
+import { mapState, mapActions } from 'vuex'
+
 export default {
   components: {},
   mixins: [searchMixins],
   props: {},
   data() {
     return {
-      searchObj: {},
-      teacherList: [],
-      agentList: [],
-      gradeList: []
+      searchObj: {}
     }
   },
   computed: {
+    ...mapState('commonRequest', ['remoteData']),
+    commonRequestEnum() {
+      return COMMON_REQUEST_ENUM
+    },
     statusList() {
       return enumObj2CodeLabArr(COMMON_STATUS_MAP)
     },
     lineList() {
       return enumObj2CodeLabArr(LINE_MODE_MAP)
+    },
+    gradeList() {
+      const { GRADE } = this.commonRequestEnum
+      return this.remoteData?.[GRADE] ?? []
+    },
+    agentList() {
+      const { AGENT } = this.commonRequestEnum
+      return this.remoteData?.[AGENT] ?? []
+    },
+    teacherList() {
+      const { TEACHER } = this.commonRequestEnum
+      return this.remoteData?.[TEACHER] ?? []
     }
   },
   watch: {},
-  methods: {}
+  methods: {
+    ...mapActions('commonRequest', ['fetchSelectList']),
+    async remoteHandler(name, type) {
+      if (!name) return
+      await this.fetchSelectList({ params: { name }, type })
+    }
+  }
 }
 </script>

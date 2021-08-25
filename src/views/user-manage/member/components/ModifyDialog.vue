@@ -8,31 +8,16 @@
     <el-form
       ref="addForm"
       style="width: 80%;"
-      :model="addForm"
+      :model="modifyForm"
       label-width="80px"
       :rules="rules"
     >
-      <el-form-item label="教师姓名" prop="name">
-        <el-input v-model="addForm.name" placeholder="请输入教师姓名" />
-      </el-form-item>
-      <el-form-item label="账号" prop="number">
-        <el-input v-model="addForm.number" placeholder="请输入账号" />
-      </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input
-          v-model="addForm.pass"
-          type="password"
-          placeholder="请输入密码"
-          autocomplete="off"
-        />
-      </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input
-          v-model="addForm.checkPass"
-          type="password"
-          placeholder="请确认密码"
-          autocomplete="off"
-        />
+      <el-form-item label="性别" prop="sex">
+        <el-radio-group v-model="modifyForm.sex">
+          <el-radio :label="3">备选项</el-radio>
+          <el-radio :label="6">备选项</el-radio>
+          <el-radio :label="9">备选项</el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -53,11 +38,14 @@ export default {
   },
   data() {
     return {
-      addForm: {
-        name: '',
-        number: '',
-        pass: '',
-        checkPass: ''
+      modifyForm: {
+        sex: '',
+        phone: '',
+        status: '',
+        endAt: '',
+        gradeId: '',
+        teacherId: '',
+        line: ''
       }
     }
   },

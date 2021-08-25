@@ -10,6 +10,10 @@ export default {
       type: [String, Number, Array],
       default: ''
     },
+    clearable: {
+      type: Boolean,
+      default: true
+    },
     keyValues: {
       type: Object,
       default: () => ({

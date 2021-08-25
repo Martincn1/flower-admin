@@ -1,5 +1,8 @@
 export default {
   route: {
+    // TODO: 配置路由名称
+    userManage: '用户管理',
+    userManageMember: '会员管理',
     dashboard: 'Dashboard',
     documentation: 'Documentation',
     guide: 'Guide',

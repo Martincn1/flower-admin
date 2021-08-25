@@ -8,7 +8,7 @@ const userManageRouter = {
   redirect: 'noRedirect',
   name: ' userManage',
   meta: {
-    title: '用户管理',
+    title: 'userManage',
     // TODO: icon 后续修改
     icon: 'component'
   },
@@ -16,14 +16,14 @@ const userManageRouter = {
     {
       path: '/userManage/member',
       component: () => import('views/user-manage/member'),
-      name: 'UserManageMember',
-      meta: { title: '会员管理' }
+      name: 'userManageMember',
+      meta: { title: 'userManageMember' }
     },
     {
       path: '/userManage/teacher',
       component: () => import('views/user-manage/teacher'),
-      name: 'UserManageTeacher',
-      meta: { title: '教师管理' }
+      name: 'userManageTeacher',
+      meta: { title: 'userManageTeacher' }
     }
   ]
 }

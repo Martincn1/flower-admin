@@ -19,6 +19,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="modifyVisible"
+      :modify-form="modifyData"
     />
   </div>
 </template>
@@ -46,7 +47,8 @@ export default {
     return {
       fileList: [],
       list: [],
-      modifyVisible: true
+      modifyVisible: false,
+      modifyData: {}
     }
   },
   computed: {
@@ -58,7 +60,10 @@ export default {
     },
     columns() {
       const handlers = {
-        modifyHandler: () => { this.modifyVisible = true }
+        modifyHandler: (row) => {
+          this.modifyData = row
+          this.modifyVisible = true
+        }
       }
       return ColumnsConfig(handlers)
     }
