@@ -5,6 +5,7 @@
     v-on="$listeners"
     @close="handlerClose"
   >
+    {{ JSON.stringify(modifyForm) }}
     <el-form
       ref="addForm"
       style="width: 80%;"
@@ -14,9 +15,17 @@
     >
       <el-form-item label="性别" prop="sex">
         <el-radio-group v-model="modifyForm.sex">
-          <el-radio :label="3">备选项</el-radio>
-          <el-radio :label="6">备选项</el-radio>
-          <el-radio :label="9">备选项</el-radio>
+          <el-radio :label="sexNameEnum.MAN">男</el-radio>
+          <el-radio :label="sexNameEnum.WOMEN">女</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="手机号" prop="phone">
+        <el-input v-model="modifyForm.phone" />
+      </el-form-item>
+      <el-form-item lbale="是否禁用" prop="status">
+        <el-radio-group v-model="modifyForm.status">
+          <el-radio :label="commonStatusEnum.DISABLED">是</el-radio>
+          <el-radio :label="commonStatusEnum.NORMAL">否</el-radio>
         </el-radio-group>
       </el-form-item>
     </el-form>
@@ -28,12 +37,19 @@
 </template>
 
 <script>
+
+import { SEX_NAME_ENUM, COMON_STATUS_ENUM } from 'enums/common/index.js'
+
 export default {
   components: {},
   props: {
     visible: {
       type: Boolean,
       default: false
+    },
+    modifyData: {
+      type: Object,
+      default: () => ({})
     }
   },
   data() {
@@ -46,7 +62,9 @@ export default {
         gradeId: '',
         teacherId: '',
         line: ''
-      }
+      },
+      sexNameEnum: Object.freeze(SEX_NAME_ENUM),
+      commonStatusEnum: Object.freeze(COMON_STATUS_ENUM)
     }
   },
   computed: {
@@ -77,7 +95,15 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    modifyData: {
+      handler(val) {
+        this.modifyForm = { ...val }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
     handlerClose() {
       this.$refs.addForm.resetFields()

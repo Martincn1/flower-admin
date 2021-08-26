@@ -13,7 +13,7 @@ export default {
     GET_SELECT_LIST(state, preLoad) {
       try {
         const { type, data } = preLoad
-        state.remoteData.[type] = cloneDeep(data ?? [])
+        state.remoteData[type] = cloneDeep(data ?? [])
       } catch (error) {
         console.error(error)
       }

@@ -19,7 +19,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="modifyVisible"
-      :modify-form="modifyData"
+      :modify-data="modifyData"
     />
   </div>
 </template>

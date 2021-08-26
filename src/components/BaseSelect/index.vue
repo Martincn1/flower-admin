@@ -1,18 +1,15 @@
 <script>
 export default {
   name: 'BaseSelect',
+  inheritAttrs: false,
   props: {
     options: {
       type: Array,
       default: () => []
     },
     value: {
-      type: [String, Number, Array],
+      type: [Number, String, Array],
       default: ''
-    },
-    clearable: {
-      type: Boolean,
-      default: true
     },
     keyValues: {
       type: Object,
@@ -20,28 +17,47 @@ export default {
         value: 'value',
         label: 'label'
       })
+    },
+    filterable: {
+      type: Boolean,
+      default: true
+    },
+    clearable: {
+      type: Boolean,
+      default: true
+    },
+    reserveKeyword: {
+      type: Boolean,
+      default: true
+    },
+    format: {
+      type: Function,
+      required: false
+    },
+    maxWidth: {
+      type: String,
+      required: false
     }
   },
-  render(h) {
-    return h(
-      'el-select',
-      {
-        on: this.$listeners,
-        attrs: this.$attrs,
-        props: {
-          value: this.value
-        },
-        scopedSlots: this.$scopedSlots
-      },
-      this.options.map((op) =>
-        h('el-option', {
-          props: {
-            key: op[this.keyValues.value],
-            label: op[this.keyValues.label],
-            value: op[this.keyValues.value]
-          }
-        })
-      )
+  render() {
+    return (
+      <el-select
+        {...{
+          props: { ...this.$props },
+          attrs: { ...this.$attrs },
+          on: { ...this.$listeners },
+          scopedSlots: { ...this.$scopedSlots }
+        }}
+      >
+        { this.options.map(item => {
+          const formatLabel = this.format ? this.format(item) : item[this.keyValues.label]
+          return (<el-option
+            key={item[this.keyValues.value]}
+            label={formatLabel}
+            style={{ maxWidth: this.maxWidth }}
+            value={item[this.keyValues.value]} />)
+        })}
+      </el-select>
     )
   }
 }
