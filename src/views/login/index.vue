@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
+    <el-form ref="loginForm" :model="loginForm" class="login-form" autocomplete="on" label-position="left">
 
       <div class="title-container">
         <h3 class="title">
@@ -9,13 +9,13 @@
         <lang-select class="set-language" />
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="account">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.username"
+          v-model="loginForm.account"
           :placeholder="$t('login.username')"
           name="username"
           type="text"
@@ -25,14 +25,14 @@
       </el-form-item>
 
       <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
-        <el-form-item prop="password">
+        <el-form-item prop="pass">
           <span class="svg-container">
             <svg-icon icon-class="password" />
           </span>
           <el-input
             :key="passwordType"
             ref="password"
-            v-model="loginForm.password"
+            v-model="loginForm.pass"
             :type="passwordType"
             :placeholder="$t('login.password')"
             name="password"
@@ -81,7 +81,7 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './components/SocialSignin'
 
@@ -89,28 +89,10 @@ export default {
   name: 'Login',
   components: { LangSelect, SocialSign },
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
-      } else {
-        callback()
-      }
-    }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        account: '',
+        pass: ''
       },
       passwordType: 'password',
       capsTooltip: false,
@@ -136,9 +118,10 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.username === '') {
+    const { account, pass } = this.loginForm
+    if (account === '') {
       this.$refs.username.focus()
-    } else if (this.loginForm.password === '') {
+    } else if (pass === '') {
       this.$refs.password.focus()
     }
   },
@@ -161,17 +144,12 @@ export default {
       })
     },
     handleLogin() {
-      this.$refs.loginForm.validate(valid => {
+      this.$refs.loginForm.validate(async valid => {
         if (valid) {
           this.loading = true
-          this.$store.dispatch('user/login', this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
-              this.loading = false
-            })
-            .catch(() => {
-              this.loading = false
-            })
+          await this.$store.dispatch('user/login', this.loginForm)
+          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+          this.loading = false
         } else {
           console.log('error submit!!')
           return false

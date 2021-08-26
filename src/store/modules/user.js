@@ -1,6 +1,8 @@
-import { login, logout, getInfo } from '@/api/user'
+import { logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
+
+import { getLoginInfo } from 'api/admin/index.js'
 
 const state = {
   token: getToken(),
@@ -30,18 +32,19 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
-    })
+  async login({ commit }, userInfo) {
+    const { account, pass } = userInfo
+    const { _success, data } = await getLoginInfo({ account, pass })
+    // TODO:根据返回提示对应信息
+    if (!_success) return
+    const { userData: { name, image }, token } = data
+    // TODO:暂时先按照这个结构写
+    commit('SET_NAME', name)
+    commit('SET_AVATAR', image)
+    commit('SET_TOKEN', token)
+    // TODO: 默认先绑定管理员权限
+    commit('SET_ROLES', ['admin'])
+    setToken(data.token)
   },
 
   // get user info
@@ -72,7 +75,7 @@ const actions = {
     })
   },
 
-  // user logout
+  // user logout 推出登录，重置一些必要数据TOKEN、ROLES
   logout({ commit, state, dispatch }) {
     return new Promise((resolve, reject) => {
       logout(state.token).then(() => {

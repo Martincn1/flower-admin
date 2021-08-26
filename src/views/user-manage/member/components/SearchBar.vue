@@ -12,10 +12,6 @@
       <base-select
         v-model="searchObj.grade_id"
         placeholder="请选择年级"
-        filterable
-        remote
-        reserve-keyword
-        :remote-method="(name) => remoteHandler(name, commonRequestEnum.GRADE)"
         :options="gradeList"
         :key-values="{value: 'id', label: 'name'}"
       />
@@ -24,10 +20,6 @@
       <base-select
         v-model="searchObj.teacher_id"
         placeholder="请选择教师"
-        filterable
-        remote
-        reserve-keyword
-        :remote-method="(name) => remoteHandler(name, commonRequestEnum.TEACHER)"
         :options="teacherList"
         :key-values="{value: 'id', label: 'name'}"
       />
@@ -36,10 +28,6 @@
       <base-select
         v-model="searchObj.agent_id"
         placeholder="请选择经销商"
-        filterable
-        remote
-        reserve-keyword
-        :remote-method="(name) => remoteHandler(name, commonRequestEnum.AGENT)"
         :options="agentList"
         :key-values="{value: 'id', label: 'name'}"
       />
@@ -90,9 +78,6 @@ export default {
   },
   computed: {
     ...mapState('commonRequest', ['remoteData']),
-    commonRequestEnum() {
-      return COMMON_REQUEST_ENUM
-    },
     statusList() {
       return enumObj2CodeLabArr(COMMON_STATUS_MAP)
     },
@@ -100,16 +85,16 @@ export default {
       return enumObj2CodeLabArr(LINE_MODE_MAP)
     },
     gradeList() {
-      const { GRADE } = this.commonRequestEnum
-      return this.remoteData?.[GRADE] ?? []
+      const { GRADE } = COMMON_REQUEST_ENUM
+      return this.remoteData[GRADE] ?? []
     },
     agentList() {
-      const { AGENT } = this.commonRequestEnum
-      return this.remoteData?.[AGENT] ?? []
+      const { AGENT } = COMMON_REQUEST_ENUM
+      return this.remoteData[AGENT] ?? []
     },
     teacherList() {
-      const { TEACHER } = this.commonRequestEnum
-      return this.remoteData?.[TEACHER] ?? []
+      const { TEACHER } = COMMON_REQUEST_ENUM
+      return this.remoteData[TEACHER] ?? []
     }
   },
   watch: {},

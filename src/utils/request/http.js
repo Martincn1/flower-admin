@@ -31,8 +31,6 @@ const request = async(method, url, data, {
   globalLoading && store.dispatch('requestLoading/setLoadingStatus', true)
   if (options.params) {
     options.params = dealParams(options.params)
-  } else {
-    data = dealParams(data)
   }
   if (options.kids) {
     if (method === 'get') {
@@ -44,7 +42,6 @@ const request = async(method, url, data, {
   const { isCamelCase = true, formats = [], ...rest } = options
   let formatsArr = cloneDeep(formats)
   // 获取数据
-  data = dealParams(data)
   const resData = await axios({ method, url, data, ...rest }).catch((err) => ({
     _success: false,
     data: null,

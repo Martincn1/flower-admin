@@ -7,7 +7,11 @@ import { cloneDeep } from 'lodash-es'
 export default {
   namespaced: true,
   state: {
-    remoteData: {}
+    remoteData: {
+      TEACHER: [],
+      AGENT: [],
+      GRADE: []
+    }
   },
   mutations: {
     GET_SELECT_LIST(state, preLoad) {

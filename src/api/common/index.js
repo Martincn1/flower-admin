@@ -1,8 +1,8 @@
 import axios from 'utils/request/http'
 
 // 文件上传
-export function uploadFile(data) {
-  return axios.post('/common/uploadFile', data)
+export function uploadFile(data, { globalLoading = false, ...options }) {
+  return axios.post('/common/uploadFile', data, { globalLoading, ...options })
 }
 
 // 老师下拉列表筛选
