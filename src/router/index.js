@@ -14,6 +14,7 @@ import nestedRouter from './modules/nested'
 
 // TODO: 业务路由
 import userManageRouter from './modules/user-manage'
+import courseManageRouter from './modules/course-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -133,6 +134,7 @@ export const constantRoutes = [
  */
 export const asyncRoutes = [
   userManageRouter,
+  courseManageRouter,
   {
     path: '/permission',
     component: Layout,
