@@ -20,9 +20,9 @@
         <el-input v-model="addForm.number" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="头像">
-        <avatar-upload :image="addForm.image" @upload-success="uploadSuccess" />
+        <avatar-upload v-model="addForm.image" />
       </el-form-item>
-      <el-form-item label="密码" prop="pass">
+      <el-form-item v-if="!addForm.id" label="密码" prop="pass">
         <el-input
           v-model="addForm.pass"
           type="password"
@@ -59,6 +59,15 @@ import { mapState, mapActions } from 'vuex'
 
 import { isEmpty, cloneDeep } from 'lodash-es'
 
+const defaultFields = {
+  id: '',
+  name: '',
+  number: '',
+  pass: '',
+  image: '',
+  agent_id: '',
+  grade_id: ''
+}
 export default {
   components: {},
   props: {
@@ -73,14 +82,7 @@ export default {
   },
   data() {
     return {
-      addForm: {
-        name: '',
-        number: '',
-        pass: '',
-        image: '',
-        agent_id: '',
-        grade_id: ''
-      },
+      addForm: { ...defaultFields },
       disabled: false
     }
   },
@@ -121,9 +123,12 @@ export default {
   watch: {
     modifyData: {
       handler(val) {
-        if (isEmpty(val)) return
-        const { agent = {}, grades = {}, id, name, number, pass, image } = val
-        this.addForm = cloneDeep({ id, name, number, pass, image, agent_id: agent.id, grade_id: grades.id })
+        if (isEmpty(val)) {
+          this.addForm = { ...defaultFields }
+        } else {
+          const { agent = {}, grades = {}, id, name, number, pass, image } = val
+          this.addForm = cloneDeep({ id, name, number, pass, image: image ?? '', agent_id: agent.id, grade_id: grades.id })
+        }
       },
       deep: true,
       immediate: true
@@ -132,8 +137,8 @@ export default {
   methods: {
     ...mapActions('commonRequest', ['fetchSelectList']),
     handlerOpen() {
-      this.getGradeList()
-      this.getAgentSelect()
+      !this.gradeList.length && this.getGradeList()
+      !this.agentList.length && this.getAgentSelect()
     },
     handlerClose() {
       Object.assign(this.$data, this.$options.data())

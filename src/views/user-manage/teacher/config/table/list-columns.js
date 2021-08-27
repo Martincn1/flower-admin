@@ -2,11 +2,6 @@ import { COMON_STATUS_ENUM } from 'enums/common/index'
 
 import { formatNormalize } from 'utils/filter'
 
-export const checkBoxColumn = {
-  type: 'selection',
-  width: 55
-}
-
 export const nameColumn = {
   prop: 'name',
   label: '姓名'
@@ -82,32 +77,42 @@ export const gradesColumn = {
   formatter: (row) => formatNormalize(row?.grades?.name)
 }
 
-export const optionColumn = (modifyHandler) => ({
+export const optionColumn = (modifyHandler, modifyPassHandler) => ({
   label: '修改',
   scopedSlots: h => {
     return {
       default({ row }) {
-        return h('el-button', {
-          props: {
-            type: 'primary',
-            size: 'mini'
-          },
-          on: {
-            click: () => modifyHandler(row)
-          }
-        }, '修改')
+        return h('div', null, [
+          h('el-button', {
+            props: {
+              type: 'primary',
+              size: 'mini'
+            },
+            on: {
+              click: () => modifyHandler(row)
+            }
+          }, '编辑'),
+          h('el-button', {
+            props: {
+              type: 'danger',
+              size: 'mini'
+            },
+            on: {
+              click: () => modifyPassHandler(row.id)
+            }
+          }, '修改密码')
+        ])
       }
     }
   }
 })
 
-export default ({ changeStatus, modifyHandler }) => ([
-  checkBoxColumn,
+export default ({ changeStatus, modifyHandler, modifyPassHandler }) => ([
   nameColumn,
   imageColumn,
   statusColumn(changeStatus),
   numberColumn,
   agentColumn,
   gradesColumn,
-  optionColumn(modifyHandler)
+  optionColumn(modifyHandler, modifyPassHandler)
 ])

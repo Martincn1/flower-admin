@@ -5,9 +5,8 @@
     v-on="$listeners"
     @close="handlerClose"
   >
-    {{ JSON.stringify(modifyForm) }}
     <el-form
-      ref="addForm"
+      ref="modifyForm"
       style="width: 80%;"
       :model="modifyForm"
       label-width="80px"
@@ -22,11 +21,40 @@
       <el-form-item label="手机号" prop="phone">
         <el-input v-model="modifyForm.phone" />
       </el-form-item>
-      <el-form-item lbale="是否禁用" prop="status">
+      <el-form-item label="是否禁用" prop="status">
         <el-radio-group v-model="modifyForm.status">
           <el-radio :label="commonStatusEnum.DISABLED">是</el-radio>
           <el-radio :label="commonStatusEnum.NORMAL">否</el-radio>
         </el-radio-group>
+      </el-form-item>
+      <el-form-item label="所属老师" prop="agent_id">
+        <base-select
+          v-model="modifyForm.teacher_id"
+          :options="teacherList"
+          :key-values="{value: 'id', label: 'name'}"
+        />
+      </el-form-item>
+      <el-form-item label="所属年级" prop="grade_id">
+        <base-select
+          v-model="modifyForm.grade_id"
+          :options="gradeList"
+          :key-values="{value: 'id', label: 'name'}"
+        />
+      </el-form-item>
+      <el-form-item label="经销商" prop="grade_id">
+        <base-select
+          v-model="modifyForm.agent_id"
+          :options="agentList"
+          :key-values="{value: 'id', label: 'name'}"
+        />
+      </el-form-item>
+      <el-form-item label="线上/线下" prop="line">
+        <base-select
+          v-model="modifyForm.line"
+          placeholder="请选择线上/线下"
+          :options="lineList"
+          :key-values="{value: 'code', label: 'label'}"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -40,6 +68,27 @@
 
 import { SEX_NAME_ENUM, COMON_STATUS_ENUM } from 'enums/common/index.js'
 
+import { LINE_MODE_MAP } from 'enums/user-manage/index'
+
+import { enumObj2CodeLabArr } from 'utils/util'
+
+import { COMMON_REQUEST_ENUM } from 'config/common'
+
+import { mapState } from 'vuex'
+
+import { isEmpty, cloneDeep } from 'lodash-es'
+
+const defaultFields = {
+  id: '',
+  sex: '',
+  phone: '',
+  status: '',
+  endAt: '',
+  grade_id: '',
+  teacher_id: '',
+  agent_id: '',
+  line: ''
+}
 export default {
   components: {},
   props: {
@@ -54,20 +103,13 @@ export default {
   },
   data() {
     return {
-      modifyForm: {
-        sex: '',
-        phone: '',
-        status: '',
-        endAt: '',
-        gradeId: '',
-        teacherId: '',
-        line: ''
-      },
+      modifyForm: { ...defaultFields },
       sexNameEnum: Object.freeze(SEX_NAME_ENUM),
       commonStatusEnum: Object.freeze(COMON_STATUS_ENUM)
     }
   },
   computed: {
+    ...mapState('commonRequest', ['remoteData']),
     visibleDialog: {
       get() {
         return this.visible
@@ -77,28 +119,42 @@ export default {
       }
     },
     rules() {
-      return {
-        name: [
-          { required: true, message: '请输入教师姓名', trigger: 'blur' },
-          { min: 2, max: 18, message: '长度在 2 到 18 个字符', trigger: 'blur' }
-        ],
-        number: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        pass: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' },
-          { validator: this.letterRule, trigger: 'blur' },
-          { validator: this.validatePass, trigger: 'blur' }
-        ],
-        checkPass: [
-          { validator: this.validateCheckPass, trigger: 'blur' }
-        ]
-      }
+      return {}
+    },
+    lineList() {
+      return enumObj2CodeLabArr(LINE_MODE_MAP)
+    },
+    teacherList() {
+      const { TEACHER } = COMMON_REQUEST_ENUM
+      return this.remoteData[TEACHER] || []
+    },
+    gradeList() {
+      const { GRADE } = COMMON_REQUEST_ENUM
+      return this.remoteData[GRADE] || []
+    },
+    agentList() {
+      const { AGENT } = COMMON_REQUEST_ENUM
+      return this.remoteData[AGENT] || []
     }
   },
   watch: {
     modifyData: {
       handler(val) {
-        this.modifyForm = { ...val }
+        if (isEmpty(val)) {
+          this.modifyForm = { ...defaultFields }
+        } else {
+          const {
+            id,
+            sex,
+            phone,
+            status,
+            gradeId: grade_id,
+            teacherId: teacher_id,
+            agentId: agent_id,
+            line
+          } = val
+          this.modifyForm = cloneDeep({ id, sex, phone, status, grade_id: grade_id || '', teacher_id: teacher_id || '', agent_id: agent_id || '', line })
+        }
       },
       deep: true,
       immediate: true
@@ -106,43 +162,12 @@ export default {
   },
   methods: {
     handlerClose() {
-      this.$refs.addForm.resetFields()
+      this.$refs.modifyForm.resetFields()
     },
-    letterRule(rule, value, callback) {
-      const reg = /^[a-zA-Z0-9_-]{4,18}$/
-      if (value === '') {
-        callback(new Error('输入内容不能为空'))
-      } else if (!reg.test(value)) {
-        callback(new Error('请输入字母、数字、下划线'))
-      } else {
-        callback()
-      }
-    },
-    validatePass(rule, value, callback) {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.addForm.checkPass !== '') {
-          this.$refs.addForm.validateField('checkPass')
-        }
-        callback()
-      }
-    },
-    validateCheckPass(rule, value, callback) {
-      if (!value) {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.addForm.pass) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    },
-
     submitForm() {
-      this.$refs.addForm.validate((valid) => {
+      this.$refs.modifyForm.validate((valid) => {
         if (!valid) return
-        const { name, number, pass } = this.addForm
-        this.$emit('on-add', { name, number, pass })
+        this.$emit('on-add', { ...this.modifyForm })
       })
     }
   }

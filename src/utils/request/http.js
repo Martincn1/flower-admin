@@ -26,6 +26,7 @@ import { cloneDeep } from 'lodash-es'
 const request = async(method, url, data, {
   globalLoading = true,
   allowEmpty = true,
+  isDealParams = true,
   ...options
 }) => {
   globalLoading && store.dispatch('requestLoading/setLoadingStatus', true)
@@ -39,6 +40,8 @@ const request = async(method, url, data, {
       data = Object.assign(data, options.kids)
     }
   }
+  // 获取数据
+  isDealParams && (data = dealParams(data))
   const { isCamelCase = true, formats = [], ...rest } = options
   let formatsArr = cloneDeep(formats)
   // 获取数据

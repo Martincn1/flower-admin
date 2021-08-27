@@ -14,23 +14,15 @@
       @current-change="currentChange"
       @size-change="changePageSize"
     />
+    <!--  -->
     <add-dialog
       width="50%"
       title="添加教师"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      :visible.sync="addTeacherVisible"
+      :visible.sync="modifyVisible"
       :modify-data="modifyData"
-      @on-add="(obj) => addTeacherEvent(obj, 'addTeacherVisible')"
-    />
-    <pass-dialog
-      width="50%"
-      title="修改密码"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :visible.sync="passVisible"
-      :modify-data="modifyData"
-      @on-add="(obj) => addTeacherEvent(obj, 'passVisible')"
+      @on-add="addGradeEvent"
     />
   </div>
 </template>
@@ -39,9 +31,8 @@
 import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
-import PassDialog from './components/PassDialog.vue'
 
-import { getTeacherList, addTeacher, updateTeacherInfo } from 'api/user-manage/teacher.js'
+import { getGradeList, addGradeInfo, updateGradeInfo } from 'api/user-manage/grade.js'
 
 import { tableProps } from 'config/columns/index.js'
 
@@ -57,16 +48,14 @@ export default {
   components: {
     SearchBar,
     OperateBtn,
-    AddDialog,
-    PassDialog
+    AddDialog
   },
   mixins: [listMixins],
   data() {
     return {
       searchObj: {},
       list: [],
-      addTeacherVisible: false,
-      passVisible: false,
+      modifyVisible: false,
       modifyData: {}
     }
   },
@@ -83,10 +72,6 @@ export default {
         modifyHandler: (row) => {
           this.modifyData = cloneDeep(row)
           this.addTeacherVisible = true
-        },
-        modifyPassHandler: (id) => {
-          this.modifyData = cloneDeep({ id })
-          this.passVisible = true
         }
       }
       return Columns(handlers)
@@ -100,16 +85,31 @@ export default {
       return OperateBtnConfigs(handlers)
     }
   },
+  watch: {},
   created() {
     this.fetchData()
   },
   methods: {
+
     async changeStatus(val, row) {
       const { id } = row
-      const { _success } = await updateTeacherInfo({ id, status: val })
+      const { _success } = await updateGradeInfo({ id, status: val })
       if (!_success) return
       this.fetchData()
       this.$message.success('修改成功')
+    },
+
+    async addGradeEvent(obj) {
+      const { id } = obj
+      const apiEnum = {
+        0: addGradeInfo,
+        1: updateGradeInfo
+      }
+      const { _success } = await apiEnum[+!!id](obj)
+      if (!_success) return
+      this.modifyVisible = false
+      this.$message.success('操作成功')
+      this.fetchData()
     },
 
     async fetchData() {
@@ -119,50 +119,11 @@ export default {
         pageSize,
         ...this.searchObj
       }
-      const { _success, data } = await getTeacherList(params)
+      const { _success, data } = await getGradeList(params)
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total
-    },
-
-    async addTeacherEvent(obj, type) {
-      const { id } = obj
-      const apiEnum = {
-        0: addTeacher,
-        1: updateTeacherInfo
-      }
-      const { _success } = await apiEnum[+!!id](obj)
-      if (!_success) return
-      this[type] = false
-      this.$message.success('新增成功')
-      this.fetchData()
     }
   }
 }
 </script>
-<style lang="less" scoped>
-/deep/ .img-wrap {
-  display: flex;
-  justify-content: center;
-  border-radius: 4px;
-
-  .image-view {
-    width: 40px !important;
-    height: 40px !important;
-    background-color: rgba(236, 235, 235, 0.86);
-
-    .el-image {
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
-
-      .el-image__inner {
-        width: auto;
-        max-width: 100% !important;
-        height: auto;
-        max-height: 100% !important;
-      }
-    }
-  }
-}
-</style>
