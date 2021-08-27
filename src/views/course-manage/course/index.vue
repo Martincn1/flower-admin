@@ -20,8 +20,8 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="addTeacherVisible"
-      @on-add="addTeacherEvent"
     />
+    <!-- @on-add="addTeacherEvent" -->
   </div>
 </template>
 
@@ -32,9 +32,12 @@ import AddDialog from './components/AddDialog.vue'
 
 import { getCourseList, courseTypeList } from 'api/course-manage/course.js'
 import listMixins from 'mixins/list-mixins'
+import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
 import Columns from './config/table/list-columns'
 import OperateBtnConfigs from './config/operate-btn'
+import { mapState } from 'vuex'
+
 export default {
   components: {
     SearchBar,
@@ -50,6 +53,11 @@ export default {
     }
   },
   computed: {
+    ...mapState('commonRequest', ['remoteData']),
+    gradeList() {
+      const { GRADE } = COMMON_REQUEST_ENUM
+      return this.remoteData[GRADE] ?? []
+    },
     tableProps() {
       return {
         ...tableProps,
