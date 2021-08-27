@@ -6,7 +6,7 @@ export function fetchRoutes(params) {
 }
 
 // 登录接口
-export function getLoginIno(data) {
+export function getLoginInfo(data) {
   return axios.post('/admin/Login', data)
 }
 

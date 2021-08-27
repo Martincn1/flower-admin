@@ -23,13 +23,15 @@ import Pagination from './MyPagination/Pagination'
 import TableRender from './TableRender/TableRender'
 import HeaderBar from './HeaderBar'
 import ImageView from './ImageView'
+import AvatarUpload from './AvatarUpload'
 
 const components = [
   BaseSelect,
   Pagination,
   TableRender,
   HeaderBar,
-  ImageView
+  ImageView,
+  AvatarUpload
 ]
 
 const install = (Vue) => {

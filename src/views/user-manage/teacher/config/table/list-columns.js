@@ -15,23 +15,26 @@ export const nameColumn = {
 export const imageColumn = {
   prop: 'image',
   label: '头像',
+  width: 80,
   scopedSlots: h => ({
     default({ row }) {
-      return h('image-view', {
-        props: {
-          src: row.image,
-          fit: 'cover'
-        },
-        style: {
-          width: '60px',
-          height: '60px'
-        }
-      })
+      return h('div', {
+        class: 'img-wrap'
+      }, [
+        h('image-view', {
+          class: 'image-view',
+          props: {
+            src: row.image,
+            fit: 'cover',
+            popover: !!row.image
+          }
+        })
+      ])
     }
   })
 }
 
-export const statusColumn = {
+export const statusColumn = (changeStatus) => ({
   prop: 'status',
   label: '状态',
   scopedSlots: h => {
@@ -44,16 +47,13 @@ export const statusColumn = {
             inactiveValue: COMON_STATUS_ENUM.DISABLED
           },
           on: {
-            change: (val) => {
-              // TODO:这里需要调用接口，先占位
-              row.status = val
-            }
+            change: (val) => changeStatus(val, row)
           }
         })
       }
     }
   }
-}
+})
 
 export const numberColumn = {
   prop: 'number',
@@ -82,12 +82,32 @@ export const gradesColumn = {
   formatter: (row) => formatNormalize(row?.grades?.name)
 }
 
-export default [
+export const optionColumn = (modifyHandler) => ({
+  label: '修改',
+  scopedSlots: h => {
+    return {
+      default({ row }) {
+        return h('el-button', {
+          props: {
+            type: 'primary',
+            size: 'mini'
+          },
+          on: {
+            click: () => modifyHandler(row)
+          }
+        }, '修改')
+      }
+    }
+  }
+})
+
+export default ({ changeStatus, modifyHandler }) => ([
   checkBoxColumn,
   nameColumn,
   imageColumn,
-  statusColumn,
+  statusColumn(changeStatus),
   numberColumn,
   agentColumn,
-  gradesColumn
-]
+  gradesColumn,
+  optionColumn(modifyHandler)
+])

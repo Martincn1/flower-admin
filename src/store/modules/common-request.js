@@ -7,13 +7,17 @@ import { cloneDeep } from 'lodash-es'
 export default {
   namespaced: true,
   state: {
-    remoteData: {}
+    remoteData: {
+      TEACHER: [],
+      AGENT: [],
+      GRADE: []
+    }
   },
   mutations: {
     GET_SELECT_LIST(state, preLoad) {
       try {
         const { type, data } = preLoad
-        state.remoteData.[type] = cloneDeep(data ?? [])
+        state.remoteData[type] = cloneDeep(data ?? [])
       } catch (error) {
         console.error(error)
       }

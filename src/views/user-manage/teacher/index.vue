@@ -20,6 +20,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="addTeacherVisible"
+      :modify-data="modifyData"
       @on-add="addTeacherEvent"
     />
   </div>
@@ -30,7 +31,7 @@ import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 
-import { getTeacherList, addTeacher } from 'api/user-manage/teacher.js'
+import { getTeacherList, addTeacher, updateTeacherInfo } from 'api/user-manage/teacher.js'
 
 import { tableProps } from 'config/columns/index.js'
 
@@ -51,7 +52,8 @@ export default {
     return {
       searchObj: {},
       list: [],
-      addTeacherVisible: false
+      addTeacherVisible: false,
+      modifyData: {}
     }
   },
   computed: {
@@ -62,7 +64,14 @@ export default {
       }
     },
     columns() {
-      return Columns
+      const handlers = {
+        changeStatus: (val, row) => this.changeStatus(val, row),
+        modifyHandler: (row) => {
+          this.modifyData = row
+          this.addTeacherVisible = true
+        }
+      }
+      return Columns(handlers)
     },
     operateConfigs() {
       const handlers = {
@@ -78,6 +87,14 @@ export default {
     this.fetchData()
   },
   methods: {
+    async changeStatus(val, row) {
+      const { id } = row
+      const { _success } = await updateTeacherInfo({ id, status: val })
+      if (!_success) return
+      this.fetchData()
+      this.$message.success('修改成功')
+    },
+
     async fetchData() {
       const { page, pageSize } = this.pageObj
       const params = {
@@ -101,5 +118,29 @@ export default {
   }
 }
 </script>
-<style scoped>
+<style lang="less" scoped>
+/deep/ .img-wrap {
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+
+  .image-view {
+    width: 40px !important;
+    height: 40px !important;
+    background-color: rgba(236, 235, 235, 0.86);
+
+    .el-image {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+
+      .el-image__inner {
+        width: auto;
+        max-width: 100% !important;
+        height: auto;
+        max-height: 100% !important;
+      }
+    }
+  }
+}
 </style>

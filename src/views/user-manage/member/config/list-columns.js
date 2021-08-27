@@ -20,7 +20,6 @@ export const nameColumn = {
   label: '用户名',
   formatter: (row) => formatNormalize(row.name)
 }
-
 export const imageColumn = {
   prop: 'image',
   label: '头像',

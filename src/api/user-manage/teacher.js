@@ -9,3 +9,8 @@ export function getTeacherList(params) {
 export function addTeacher(data) {
   return axios.put('/admin/Teacher', data)
 }
+
+// 编辑教师
+export function updateTeacherInfo(data) {
+  return axios.post('/admin/Teacher', data)
+}

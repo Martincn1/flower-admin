@@ -19,7 +19,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="modifyVisible"
-      :modify-form="modifyData"
+      :modify-data="modifyData"
     />
   </div>
 </template>
@@ -33,8 +33,11 @@ import listMixins from 'mixins/list-mixins'
 import { getUserList } from 'api/user-manage/member.js'
 
 import { tableProps } from 'config/columns/index.js'
+import { COMMON_REQUEST_ENUM } from 'config/common'
 
 import ColumnsConfig from './config/list-columns'
+
+import { mapActions } from 'vuex'
 
 export default {
   components: {
@@ -70,8 +73,12 @@ export default {
   },
   created() {
     this.fetchData()
+    this.getTeacherList()
+    this.getGradeList()
+    this.getAgentSelect()
   },
   methods: {
+    ...mapActions('commonRequest', ['fetchSelectList']),
     async fetchData() {
       const { page, pageSize } = this.pageObj
       const params = {
@@ -83,6 +90,18 @@ export default {
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total
+    },
+    async getTeacherList() {
+      const { TEACHER } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: TEACHER })
+    },
+    async getGradeList() {
+      const { GRADE } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: GRADE })
+    },
+    async getAgentSelect() {
+      const { AGENT } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: AGENT })
     }
   }
 }
