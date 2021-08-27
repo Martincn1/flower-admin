@@ -124,7 +124,8 @@ export const constantRoutes = [
         meta: { title: 'profile', icon: 'user', noCache: true }
       }
     ]
-  }
+  },
+  userManageRouter
 ]
 
 /**
@@ -132,7 +133,6 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
-  userManageRouter,
   {
     path: '/permission',
     component: Layout,
