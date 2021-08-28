@@ -10,7 +10,8 @@ export default {
     remoteData: {
       TEACHER: [],
       AGENT: [],
-      GRADE: []
+      GRADE: [],
+      PUSH_COURSE: []
     }
   },
   mutations: {

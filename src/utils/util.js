@@ -93,3 +93,16 @@ export function enumObj2CodeLabArr(obj, option = {}) {
     return arr
   }, [])
 }
+
+// 用于处理表单字段初始值的映射关系
+export function enumFormItemMap(fields, target = {}, options = {}) {
+  const res = {}
+  for (const [key, values] of Object.entries(fields)) {
+    if (isEmpty(values)) {
+      res[key] = target[values]?.[options?.[key]] ?? ''
+    } else {
+      res[key] = target[values] ?? ''
+    }
+  }
+  return res
+}

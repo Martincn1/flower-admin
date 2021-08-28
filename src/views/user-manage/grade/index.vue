@@ -71,7 +71,7 @@ export default {
         changeStatus: (val, row) => this.changeStatus(val, row),
         modifyHandler: (row) => {
           this.modifyData = cloneDeep(row)
-          this.addTeacherVisible = true
+          this.modifyVisible = true
         }
       }
       return Columns(handlers)
@@ -79,13 +79,12 @@ export default {
     operateConfigs() {
       const handlers = {
         addTeacherHandler: () => {
-          this.addTeacherVisible = true
+          this.modifyVisible = true
         }
       }
       return OperateBtnConfigs(handlers)
     }
   },
-  watch: {},
   created() {
     this.fetchData()
   },

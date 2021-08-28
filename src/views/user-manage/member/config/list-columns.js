@@ -4,40 +4,13 @@ import { SEX_NAME_MAP, COMON_STATUS_ENUM } from 'enums/common/index'
 
 import { LINE_MODE_MAP, LINE_MODE_STYLE } from 'enums/user-manage'
 
-export const checkBoxColumn = {
-  type: 'selection',
-  width: 55
-}
-
-export const idColumn = {
-  prop: 'id',
-  label: '编号',
-  formatter: (row) => formatNormalize(row.id)
-}
-
-export const nameColumn = {
-  prop: 'name',
-  label: '用户名',
-  formatter: (row) => formatNormalize(row.name)
-}
-export const imageColumn = {
-  prop: 'image',
-  label: '头像',
-  scopedSlots: h => ({
-    default({ row }) {
-      return h('image-view', {
-        props: {
-          src: row.image,
-          fit: 'cover'
-        },
-        style: {
-          width: '60px',
-          height: '60px'
-        }
-      })
-    }
-  })
-}
+import {
+  checkBoxColumn,
+  basicColumnField,
+  imageColumnField,
+  tagColumnField
+} from 'config/columns/index.js'
+import { LINE_MODE_ENUM } from '@/enums/user-manage'
 
 export const sexColumn = {
   prop: 'sex',
@@ -134,16 +107,16 @@ export const optionColumn = (modifyHandler) => ({
 
 export default ({ modifyHandler, changeStatus }) => ([
   checkBoxColumn,
-  idColumn,
-  nameColumn,
-  imageColumn,
-  sexColumn,
-  phoneColumn,
-  integralColumn,
+  basicColumnField({ prop: 'id', label: '编号' }),
+  basicColumnField({ prop: 'name', label: '用户名' }),
+  imageColumnField({ prop: 'image', label: '头像' }),
+  basicColumnField({ prop: 'sex', label: '性别' }, { fieldMap: SEX_NAME_MAP }),
+  basicColumnField({ prop: 'phone', label: '手机号' }),
+  basicColumnField({ prop: 'integral', label: '积分' }),
   statusColumn(changeStatus),
-  endAtColumn,
-  gradeColumn,
-  teacherColumn,
-  lineStatusColumn,
+  basicColumnField({ prop: 'endAt', label: '课程有效期' }),
+  basicColumnField({ prop: 'grade', label: '所属年级' }),
+  basicColumnField({ prop: 'teacher', label: '所属老师' }, { key: 'name' }, { key: 'name' }),
+  tagColumnField({ prop: 'line', label: '线上/线下' }, { styleMap: LINE_MODE_STYLE, fieldMap: LINE_MODE_ENUM }),
   optionColumn(modifyHandler)
 ])

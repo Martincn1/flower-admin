@@ -14,6 +14,8 @@ import nestedRouter from './modules/nested'
 
 // TODO: 业务路由
 import userManageRouter from './modules/user-manage'
+import taskManageRouter from './modules/task-manage'
+import orderManageRouter from './modules/order-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -125,7 +127,9 @@ export const constantRoutes = [
       }
     ]
   },
-  userManageRouter
+  userManageRouter,
+  taskManageRouter,
+  orderManageRouter
 ]
 
 /**
