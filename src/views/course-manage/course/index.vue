@@ -34,9 +34,10 @@ import { getCourseList, courseTypeList } from 'api/course-manage/course.js'
 import listMixins from 'mixins/list-mixins'
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
-import Columns from './config/table/list-columns'
+import ColumnsConfig from './config/table/list-columns'
 import OperateBtnConfigs from './config/operate-btn'
 import { mapState } from 'vuex'
+import { cloneDeep } from 'lodash-es'
 
 export default {
   components: {
@@ -49,7 +50,8 @@ export default {
     return {
       searchObj: {},
       list: [],
-      addTeacherVisible: false
+      addTeacherVisible: false,
+      modifyData: {}
     }
   },
   computed: {
@@ -65,7 +67,14 @@ export default {
       }
     },
     columns() {
-      return Columns
+      const handlers = {
+        changeStatus: (val, row) => this.changeStatus(val, row),
+        modifyHandler: (row) => {
+          this.modifyData = cloneDeep(row)
+          this.modifyVisible = true
+        }
+      }
+      return ColumnsConfig(handlers)
     },
     operateConfigs() {
       const handlers = {
@@ -82,6 +91,10 @@ export default {
     this.getCourseTypeList()
   },
   methods: {
+    async changeStatus(val, row) {
+      console.log(val, 'course -- val')
+      console.log(row, 'course -- row')
+    },
     async fetchData() {
       const { page, pageSize } = this.pageObj
       const params = {

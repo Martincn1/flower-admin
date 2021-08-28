@@ -11,35 +11,22 @@ export const serialColumn = {
   formatter: (row) => formatNormalize(row?.id)
 }
 
+export const titleColumn = {
+  prop: 'title',
+  label: '标题',
+  formatter: (row) => formatNormalize(row?.title)
+}
+
 export const nameColumn = {
-  prop: 'name',
+  prop: 'course.name',
   label: '课程名称',
-  formatter: (row) => formatNormalize(row?.name)
+  formatter: (row) => formatNormalize(row?.course?.name)
 }
 
-export const imageColumn = {
-  prop: 'img',
-  label: '课程图片',
-  scopedSlots: h => ({
-    default({ row }) {
-      return h('image-view', {
-        props: {
-          src: row.img,
-          fit: 'cover'
-        },
-        style: {
-          width: '60px',
-          height: '60px'
-        }
-      })
-    }
-  })
-}
-
-export const typeColumn = {
-  prop: 'courseType.name',
-  label: '课程类型',
-  formatter: (row) => formatNormalize(row?.courseType.name)
+export const gradeColumn = {
+  prop: 'grade.name',
+  label: '年级',
+  formatter: (row) => formatNormalize(row?.grade?.name)
 }
 
 export const optionColumn = (modifyHandler, modifyPassHandler) => ({
@@ -74,16 +61,7 @@ export const optionColumn = (modifyHandler, modifyPassHandler) => ({
             on: {
               click: () => modifyPassHandler(row.id)
             }
-          }, '查看课节'),
-          h('el-button', {
-            props: {
-              type: 'info',
-              size: 'mini'
-            },
-            on: {
-              click: () => modifyPassHandler(row.id)
-            }
-          }, '生成二维码')
+          }, '查看文字')
         ])
       }
     }
@@ -93,8 +71,8 @@ export const optionColumn = (modifyHandler, modifyPassHandler) => ({
 export default ({ modifyHandler, modifyPassHandler }) => ([
   checkBoxColumn,
   serialColumn,
+  titleColumn,
   nameColumn,
-  imageColumn,
-  typeColumn,
+  gradeColumn,
   optionColumn(modifyHandler, modifyPassHandler)
 ])

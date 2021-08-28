@@ -64,5 +64,8 @@ export default {
   },
   async put(url, data = {}, options = {}) {
     return request('put', url, data, options)
+  },
+  async delete(url, data = {}, options = {}) {
+    return request('delete', url, data, options)
   }
 }
