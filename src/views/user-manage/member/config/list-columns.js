@@ -57,7 +57,7 @@ export const integralColumn = {
   formatter: (row) => formatNormalize(row?.integral)
 }
 
-export const statusColumn = {
+export const statusColumn = (changeStatus) => ({
   prop: 'status',
   label: '是否禁用',
   scopedSlots: h => {
@@ -70,16 +70,13 @@ export const statusColumn = {
             inactiveValue: COMON_STATUS_ENUM.DISABLED
           },
           on: {
-            change: (val) => {
-              // TODO:这里需要调用接口，先占位
-              row.status = val
-            }
+            change: (val) => changeStatus(val, row)
           }
         })
       }
     }
   }
-}
+})
 
 export const endAtColumn = {
   prop: 'endAt',
@@ -135,7 +132,7 @@ export const optionColumn = (modifyHandler) => ({
   }
 })
 
-export default ({ modifyHandler }) => ([
+export default ({ modifyHandler, changeStatus }) => ([
   checkBoxColumn,
   idColumn,
   nameColumn,
@@ -143,7 +140,7 @@ export default ({ modifyHandler }) => ([
   sexColumn,
   phoneColumn,
   integralColumn,
-  statusColumn,
+  statusColumn(changeStatus),
   endAtColumn,
   gradeColumn,
   teacherColumn,

@@ -24,6 +24,7 @@ import TableRender from './TableRender/TableRender'
 import HeaderBar from './HeaderBar'
 import ImageView from './ImageView'
 import AvatarUpload from './AvatarUpload'
+import BaseDatePicker from './BaseDatePicker'
 
 const components = [
   BaseSelect,
@@ -31,7 +32,8 @@ const components = [
   TableRender,
   HeaderBar,
   ImageView,
-  AvatarUpload
+  AvatarUpload,
+  BaseDatePicker
 ]
 
 const install = (Vue) => {

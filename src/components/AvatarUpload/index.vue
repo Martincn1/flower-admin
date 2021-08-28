@@ -22,16 +22,20 @@ import { uploadFile } from 'api/common/index'
 export default {
   name: 'AvatarUpload',
   props: {
-    image: {
+    value: {
       type: String,
       required: true
     }
   },
   data() {
     return {
-      imageUrl: this.image,
       percentage: 0,
       disabled: false
+    }
+  },
+  computed: {
+    imageUrl() {
+      return this.value
     }
   },
   methods: {
@@ -53,7 +57,6 @@ export default {
     },
 
     async uploadImage(params) {
-      this.imageUrl = ''
       this.percentage = 0
       const formData = new FormData()
       const file = params.file
@@ -74,8 +77,7 @@ export default {
         return
       }
       this.disabled = false
-      this.imageUrl = data.url
-      this.$emit('upload-success', this.imageUrl)
+      this.$emit('input', data.url)
     }
   }
 }

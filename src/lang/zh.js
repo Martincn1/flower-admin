@@ -3,6 +3,7 @@ export default {
     // TODO: 配置路由名称
     userManage: '用户管理',
     userManageMember: '会员管理',
+    userManageGrade: '年级管理',
     userManageTeacher: '老师管理',
     courseManage: '课程管理',
     courseManageCharacters: '文字管理',

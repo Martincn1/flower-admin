@@ -24,6 +24,12 @@ const userManageRouter = {
       component: () => import('views/user-manage/teacher'),
       name: 'userManageTeacher',
       meta: { title: 'userManageTeacher' }
+    },
+    {
+      path: '/userManage/grade',
+      component: () => import('views/user-manage/grade'),
+      name: 'userManageGrade',
+      meta: { title: 'userManageGrade' }
     }
   ]
 }
