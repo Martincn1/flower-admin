@@ -129,7 +129,6 @@ export default {
   watch: {
     modifyData: {
       handler(val) {
-        debugger
         this.modifyForm = enumFormItemMap(MEMBER_MODIFY_ENUM, val)
       },
       deep: true,
