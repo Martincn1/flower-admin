@@ -1,5 +1,7 @@
 <template>
-  <div>课程评论记录管理</div>
+  <div>
+    优惠券管理
+  </div>
 </template>
 
 <script>

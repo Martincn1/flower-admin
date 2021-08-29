@@ -50,12 +50,6 @@ const courseManageRouter = {
       meta: { title: 'courseManageClassRecords' }
     },
     {
-      path: '/courseManage/commentRecords',
-      component: () => import('views/course-manage/comment-records'),
-      name: 'courseManageCommentRecords',
-      meta: { title: 'courseManageCommentRecords' }
-    },
-    {
       path: '/courseManage/receiveRecords',
       component: () => import('views/course-manage/receive-records'),
       name: 'courseManageReceiveRecords',
