@@ -1,6 +1,7 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
     <search-bar @on-search="searchHandler" />
+    <operate-btn :operate-config="operateConfigs" class="margin-bottom-16" />
     <table-render
       table-type="el-table"
       :table-props="tableProps"
@@ -28,6 +29,7 @@
 <script>
 import SearchBar from './components/SearchBar.vue'
 import ModifyDialog from './components/ModifyDialog.vue'
+import OperateBtn from './components/OperateBtn.vue'
 
 import listMixins from 'mixins/list-mixins'
 
@@ -37,12 +39,15 @@ import Columns from './config/list-columns'
 
 import { cloneDeep } from 'lodash-es'
 
-import { getOrderList, uodateOrderInfo } from 'api/order-manage/index.js'
+import OperateBtnConfigs from './config/operate-btn'
+
+import { getHelpList, addHelpInfo, updateHelpInfo, deleteHelpInfo } from 'api/common-manage/index.js'
 
 export default {
   components: {
     SearchBar,
-    ModifyDialog
+    ModifyDialog,
+    OperateBtn
   },
   mixins: [listMixins],
   data() {
@@ -65,9 +70,19 @@ export default {
         modifyHandler: (row) => {
           this.modifyData = cloneDeep(row)
           this.modifyVisible = true
-        }
+        },
+        deleteHandler: this.deleteHandler
       }
       return Columns(handlers)
+    },
+    operateConfigs() {
+      const handlers = {
+        addHelpHandler: () => {
+          this.modifyVisible = true
+          this.modifyData = {}
+        }
+      }
+      return OperateBtnConfigs(handlers)
     }
   },
   created() {
@@ -75,12 +90,27 @@ export default {
   },
   methods: {
     async modifyInfoHandler(obj) {
-      const params = { ...obj }
-      const { _success } = await uodateOrderInfo(params)
+      const { id } = obj
+      const apiEnum = {
+        0: addHelpInfo,
+        1: updateHelpInfo
+      }
+      const { _success } = await apiEnum[+!!id](obj)
       if (!_success) return
       this.modifyVisible = false
-      this.fetchData()
       this.$message.success('操作成功')
+      this.fetchData()
+    },
+    async deleteHandler(row) {
+      const { confirm } = await this.$confirmBox('请确认是否继续删除？', '提示', {
+        cancelButtonText: '我再想想'
+      })
+      if (!confirm) return
+      const { id } = row
+      const { _success } = await deleteHelpInfo({ id })
+      if (!_success) return
+      this.fetchData()
+      this.$message.success('删除成功')
     },
     async fetchData() {
       const { page, pageSize } = this.pageObj
@@ -89,7 +119,7 @@ export default {
         pageSize,
         ...this.searchObj
       }
-      const { _success, data } = await getOrderList(params)
+      const { _success, data } = await getHelpList(params)
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total

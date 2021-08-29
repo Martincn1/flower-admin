@@ -11,25 +11,6 @@ import {
   optionColumnField
 } from 'config/columns/index.js'
 
-export const optionColumn = (modifyHandler) => ({
-  label: '操作',
-  scopedSlots: h => {
-    return {
-      default({ row }) {
-        return h('el-button', {
-          props: {
-            type: 'primary',
-            size: 'mini'
-          },
-          on: {
-            click: () => modifyHandler(row)
-          }
-        }, '修改')
-      }
-    }
-  }
-})
-
 export default ({ modifyHandler, changeStatus }) => ([
   checkBoxColumn,
   basicColumnField({ prop: 'id', label: '编号' }),

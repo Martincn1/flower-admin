@@ -16,6 +16,7 @@ import nestedRouter from './modules/nested'
 import userManageRouter from './modules/user-manage'
 import taskManageRouter from './modules/task-manage'
 import orderManageRouter from './modules/order-manage'
+import commonManageRouter from './modules/common-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -129,6 +130,7 @@ export const constantRoutes = [
   },
   userManageRouter,
   taskManageRouter,
+  commonManageRouter,
   orderManageRouter
 ]
 

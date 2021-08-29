@@ -11,6 +11,11 @@ export default {
     task: '作业管理',
     taskList: '作业列表',
     honorList: '小红花记录管理',
+    commonManage: '公共模块',
+    commonManageProblem: '常见问题',
+    commonManageCoursePush: '推送课程',
+    commonManageAvailableCourse: '用户可用课程',
+    commonManageHomeBanner: '小程序首页',
     orderList: '用户订单管理',
 
     dashboard: '首页',

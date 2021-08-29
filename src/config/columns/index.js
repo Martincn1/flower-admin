@@ -7,7 +7,7 @@ export const tableProps = {
   stripe: true,
   emptyText: '当前暂无数据',
   border: true,
-  height: 400,
+  height: 500,
   highlightCurrentRow: false,
   size: 'middle',
   headerRowStyle: { color: '#909399', backgroundColor: '#FAFAFA' },
@@ -37,6 +37,19 @@ export const basicColumnField = ({ prop, label }, options) => {
       }
       const formatField = fieldMap ? fieldMap[field] : field
       return formatNormalize(formatField)
+    }
+  }
+}
+
+// 地区地段拼接
+export const areaColumnField = ({ prop, label }) => {
+  return {
+    prop,
+    label,
+    formatter: (row) => {
+      const { p, c, d } = row
+      const formatField = `${p}-${c}-${d}`
+      return formatField
     }
   }
 }

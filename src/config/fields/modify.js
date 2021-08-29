@@ -14,3 +14,18 @@ export const MEMBER_MODIFY_ENUM = {
   'agent_id': 'agentId',
   'line': 'line'
 }
+
+// 订单管理 - 修改
+export const ORDER_MODIFY_ENUM = {
+  id: 'id',
+  real_amount: 'realAmount',
+  is_biu: 'isBiu',
+  code: 'code'
+}
+
+// 常见问题 - 修改
+export const PROBLEM_MODIFY_ENUM = {
+  id: 'id',
+  title: 'title',
+  answer: 'answer'
+}

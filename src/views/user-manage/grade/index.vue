@@ -14,7 +14,6 @@
       @current-change="currentChange"
       @size-change="changePageSize"
     />
-    <!--  -->
     <add-dialog
       width="50%"
       title="添加教师"
