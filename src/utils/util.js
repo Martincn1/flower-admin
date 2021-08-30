@@ -1,5 +1,7 @@
 import { isNil, isEmpty, pickBy, isObject, cloneDeep } from 'lodash-es'
 
+import dayjs from 'dayjs'
+
 /**
  * 判定数据是否是null、undefined、''类型
  * @param {val} 传入的数据
@@ -105,4 +107,13 @@ export function enumFormItemMap(fields, target = {}, options = {}) {
     }
   }
   return res
+}
+
+/**
+ * 时间格式化
+ * @param {*} date
+ * @param {*} target
+ */
+export function dateFormat(date, target = 'YYYY-MM-DD HH:mm') {
+  return dayjs(date).format(target)
 }

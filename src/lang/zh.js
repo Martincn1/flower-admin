@@ -16,6 +16,7 @@ export default {
     commonManageCoursePush: '推送课程',
     commonManageAvailableCourse: '用户可用课程',
     commonManageHomeBanner: '小程序首页',
+    commonManageLevel: '学员等级管理',
     orderList: '用户订单管理',
 
     dashboard: '首页',

@@ -36,6 +36,12 @@ const commonManageRouter = {
       component: () => import('views/common-manage/home-banner'),
       name: 'commonManageHomeBanner',
       meta: { title: 'commonManageHomeBanner' }
+    },
+    {
+      path: 'level',
+      component: () => import('views/common-manage/level-manage'),
+      name: 'commonManageLevel',
+      meta: { title: 'commonManageLevel' }
     }
   ]
 }

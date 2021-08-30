@@ -29,3 +29,13 @@ export const PROBLEM_MODIFY_ENUM = {
   title: 'title',
   answer: 'answer'
 }
+
+// 推送课程 - 修改
+export const PUSH_COURSE_MODIFY_ENUM = {
+  id: 'id',
+  title: 'title',
+  word_title: 'wordTitle',
+  grade_id: 'gradeId',
+  push_time: 'pushTime',
+  end_time: 'endTime'
+}

@@ -41,6 +41,15 @@ export const basicColumnField = ({ prop, label }, options) => {
   }
 }
 
+// 时间戳类
+export const stampColumnField = ({ prop, label }, format) => {
+  return {
+    prop,
+    label,
+    formatter: (row) => format(row)
+  }
+}
+
 // 地区地段拼接
 export const areaColumnField = ({ prop, label }) => {
   return {

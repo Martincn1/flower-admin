@@ -16,6 +16,12 @@ export const SELECT_STATUS_MAP = {
   [COMON_STATUS_ENUM.NORMAL]: '否'
 }
 
+export const OTHER_STATUS_MAP = {
+  [COMON_STATUS_ENUM.NORMAL]: '禁用',
+  [COMON_STATUS_ENUM.DISABLED]: '启用'
+}
+
+export const OTHER_STATUS_LIST = enumObj2CodeLabArr(OTHER_STATUS_MAP)
 export const SELECT_STATUS_LIST = enumObj2CodeLabArr(SELECT_STATUS_MAP)
 
 // 性别
