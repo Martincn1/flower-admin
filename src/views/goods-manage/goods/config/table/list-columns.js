@@ -13,18 +13,42 @@ export const serialColumn = {
 
 export const nameColumn = {
   prop: 'name',
-  label: '课程名称',
+  label: '商品名称',
   formatter: (row) => formatNormalize(row?.name)
 }
 
+export const createAtColumn = {
+  prop: 'createdAt',
+  label: '创建时间',
+  formatter: (row) => formatNormalize(row?.createdAt)
+}
+
+export const priceColumn = {
+  prop: 'price',
+  label: '价格',
+  formatter: (row) => formatNormalize(row?.price)
+}
+
+export const dayColumn = {
+  prop: 'day',
+  label: '有效时间(天)',
+  formatter: (row) => formatNormalize(row?.day)
+}
+
+export const typeColumn = {
+  prop: 'type',
+  label: '课程',
+  formatter: (row) => formatNormalize(row?.type)
+}
+
 export const imageColumn = {
-  prop: 'img',
-  label: '课程图片',
+  prop: 'image',
+  label: '展示图片',
   scopedSlots: h => ({
     default({ row }) {
       return h('image-view', {
         props: {
-          src: row.img,
+          src: row.image,
           fit: 'cover'
         },
         style: {
@@ -36,10 +60,10 @@ export const imageColumn = {
   })
 }
 
-export const typeColumn = {
-  prop: 'courseType.name',
+export const courseTypeColumn = {
+  prop: 'courseType.type',
   label: '课程类型',
-  formatter: (row) => formatNormalize(row?.courseType.name)
+  formatter: (row) => formatNormalize(row?.courseType?.type)
 }
 
 export const optionColumn = (modifyHandler, modifyPassHandler) => ({
@@ -50,13 +74,22 @@ export const optionColumn = (modifyHandler, modifyPassHandler) => ({
         return h('div', null, [
           h('el-button', {
             props: {
+              type: 'success',
+              size: 'mini'
+            },
+            on: {
+              click: () => modifyPassHandler(row.id)
+            }
+          }, '查看数据'),
+          h('el-button', {
+            props: {
               type: 'primary',
               size: 'mini'
             },
             on: {
               click: () => modifyHandler(row)
             }
-          }, '修改'),
+          }, '修改价格'),
           h('el-button', {
             props: {
               type: 'danger',
@@ -65,25 +98,7 @@ export const optionColumn = (modifyHandler, modifyPassHandler) => ({
             on: {
               click: () => modifyPassHandler(row.id)
             }
-          }, '删除'),
-          h('el-button', {
-            props: {
-              type: 'success',
-              size: 'mini'
-            },
-            on: {
-              click: () => modifyPassHandler(row.id)
-            }
-          }, '查看课节'),
-          h('el-button', {
-            props: {
-              type: 'info',
-              size: 'mini'
-            },
-            on: {
-              click: () => modifyPassHandler(row.id)
-            }
-          }, '生成二维码')
+          }, '删除')
         ])
       }
     }
@@ -93,8 +108,11 @@ export const optionColumn = (modifyHandler, modifyPassHandler) => ({
 export default ({ modifyHandler, modifyPassHandler }) => ([
   checkBoxColumn,
   serialColumn,
-  nameColumn,
-  imageColumn,
+  createAtColumn,
+  priceColumn,
+  dayColumn,
   typeColumn,
+  imageColumn,
+  courseTypeColumn,
   optionColumn(modifyHandler, modifyPassHandler)
 ])
