@@ -33,7 +33,7 @@ export const basicColumnField = ({ prop, label }, options) => {
     formatter: (row) => {
       let field = row[prop]
       if (isObject(field)) {
-        field = prop?.[key]
+        field = field[key]
       }
       const formatField = fieldMap ? fieldMap[field] : field
       return formatNormalize(formatField)

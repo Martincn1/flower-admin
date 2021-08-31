@@ -15,25 +15,6 @@ import {
   ORDER_STATUS_STYLE
 } from 'enums/order-manage/index'
 
-export const optionColumn = (modifyHandler) => ({
-  label: '操作',
-  scopedSlots: h => {
-    return {
-      default({ row }) {
-        return h('el-button', {
-          props: {
-            type: 'primary',
-            size: 'mini'
-          },
-          on: {
-            click: () => modifyHandler(row)
-          }
-        }, '修改')
-      }
-    }
-  }
-})
-
 export default ({ modifyHandler }) => ([
   basicColumnField({ prop: 'id', label: '编号' }),
   tagColumnField(
@@ -42,7 +23,7 @@ export default ({ modifyHandler }) => ([
   ),
   basicColumnField({ prop: 'realAmount', label: '实付商品总金额' }),
   basicColumnField({ prop: 'orderNo', label: '订单号' }),
-  basicColumnField({ prop: ' payOrderNo', label: '三方支付单号' }),
+  basicColumnField({ prop: 'payOrderNo', label: '三方支付单号' }),
   basicColumnField({ prop: 'code', label: '物流单号' }),
   basicColumnField({ prop: 'address', label: '地址' }),
   basicColumnField({ prop: 'name', label: '购买用户' }),
