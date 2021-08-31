@@ -18,6 +18,8 @@ import './icons' // icon
 import './permission' // permission control
 import './utils/error-log' // error log
 
+import 'plugins/index.js'
+
 import GlobalComponents from 'components/global.js'
 
 import * as filters from './filters' // global filters

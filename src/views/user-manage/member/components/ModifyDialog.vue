@@ -70,25 +70,14 @@ import { SEX_NAME_ENUM, COMON_STATUS_ENUM } from 'enums/common/index.js'
 
 import { LINE_MODE_MAP } from 'enums/user-manage/index'
 
-import { enumObj2CodeLabArr } from 'utils/util'
+import { enumObj2CodeLabArr, enumFormItemMap } from 'utils/util'
 
 import { COMMON_REQUEST_ENUM } from 'config/common'
 
+import { MEMBER_MODIFY_ENUM } from 'config/fields/modify'
+
 import { mapState } from 'vuex'
 
-import { isEmpty, cloneDeep } from 'lodash-es'
-
-const defaultFields = {
-  id: '',
-  sex: '',
-  phone: '',
-  status: '',
-  endAt: '',
-  grade_id: '',
-  teacher_id: '',
-  agent_id: '',
-  line: ''
-}
 export default {
   components: {},
   props: {
@@ -103,7 +92,7 @@ export default {
   },
   data() {
     return {
-      modifyForm: { ...defaultFields },
+      modifyForm: enumFormItemMap(MEMBER_MODIFY_ENUM),
       sexNameEnum: Object.freeze(SEX_NAME_ENUM),
       commonStatusEnum: Object.freeze(COMON_STATUS_ENUM)
     }
@@ -140,21 +129,7 @@ export default {
   watch: {
     modifyData: {
       handler(val) {
-        if (isEmpty(val)) {
-          this.modifyForm = { ...defaultFields }
-        } else {
-          const {
-            id,
-            sex,
-            phone,
-            status,
-            gradeId: grade_id,
-            teacherId: teacher_id,
-            agentId: agent_id,
-            line
-          } = val
-          this.modifyForm = cloneDeep({ id, sex, phone, status, grade_id: grade_id || '', teacher_id: teacher_id || '', agent_id: agent_id || '', line })
-        }
+        this.modifyForm = enumFormItemMap(MEMBER_MODIFY_ENUM, val)
       },
       deep: true,
       immediate: true

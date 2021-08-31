@@ -20,7 +20,7 @@
         <el-input v-model="addForm.number" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="头像">
-        <avatar-upload v-model="addForm.image" />
+        <avatar-upload :url.sync="addForm.image" />
       </el-form-item>
       <el-form-item v-if="!addForm.id" label="密码" prop="pass">
         <el-input

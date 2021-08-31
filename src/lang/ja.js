@@ -4,6 +4,8 @@ export default {
     userManage: '用户管理',
     userManageMember: '会员管理',
     userManageGrade: '年级管理',
+    userManageInvitation: '邀请记录管理',
+    userManageAddress: '收获地址管理',
     dashboard: 'トップ',
     documentation: 'ドキュメント',
     guide: 'ガイド',

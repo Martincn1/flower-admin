@@ -20,8 +20,11 @@ const doResize = (el, binding, vnode) => {
   if (!$table) return
 
   const height = window.innerHeight - el.getBoundingClientRect().top - bottomOffset
-  $table.layout.setHeight(height)
-  $table.doLayout()
+  $table.$nextTick(() => {
+    $table.layout.setHeight(height)
+  })
+  // $table.layout.setHeight(height)
+  // $table.doLayout()
 }
 
 export default {

@@ -1,11 +1,11 @@
 import adaptive from './adaptive'
 
 const install = function(Vue) {
-  Vue.directive('el-height-adaptive-table', adaptive)
+  Vue.directive('adaptive', adaptive)
 }
 
 if (window.Vue) {
-  window['el-height-adaptive-table'] = adaptive
+  window['adaptive'] = adaptive
   Vue.use(install); // eslint-disable-line
 }
 

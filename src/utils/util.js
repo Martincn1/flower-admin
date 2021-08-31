@@ -1,5 +1,7 @@
 import { isNil, isEmpty, pickBy, isObject, cloneDeep } from 'lodash-es'
 
+import dayjs from 'dayjs'
+
 /**
  * 判定数据是否是null、undefined、''类型
  * @param {val} 传入的数据
@@ -92,4 +94,26 @@ export function enumObj2CodeLabArr(obj, option = {}) {
     }
     return arr
   }, [])
+}
+
+// 用于处理表单字段初始值的映射关系
+export function enumFormItemMap(fields, target = {}, options = {}) {
+  const res = {}
+  for (const [key, values] of Object.entries(fields)) {
+    if (isEmpty(values)) {
+      res[key] = target[values]?.[options?.[key]] ?? ''
+    } else {
+      res[key] = target[values] ?? ''
+    }
+  }
+  return res
+}
+
+/**
+ * 时间格式化
+ * @param {*} date
+ * @param {*} target
+ */
+export function dateFormat(date, target = 'YYYY-MM-DD HH:mm') {
+  return dayjs(date).format(target)
 }

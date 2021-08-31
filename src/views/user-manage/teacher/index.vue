@@ -94,6 +94,7 @@ export default {
     operateConfigs() {
       const handlers = {
         addTeacherHandler: () => {
+          this.modifyData = {}
           this.addTeacherVisible = true
         }
       }

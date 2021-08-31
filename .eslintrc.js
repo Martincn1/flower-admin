@@ -73,11 +73,12 @@ module.exports = {
       'new-parens': 2,
       'no-array-constructor': 2,
       'no-caller': 2,
-      'no-console': 'off',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-class-assign': 2,
       'no-cond-assign': 2,
       'no-const-assign': 2,
       'no-control-regex': 0,
+      'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0, // 生产环境禁止打印
       'no-delete-var': 2,
       'no-dupe-args': 2,
       'no-dupe-class-members': 2,

@@ -30,6 +30,24 @@ const userManageRouter = {
       component: () => import('views/user-manage/grade'),
       name: 'userManageGrade',
       meta: { title: 'userManageGrade' }
+    },
+    {
+      path: '/userManage/invitation',
+      component: () => import('views/user-manage/invitation'),
+      name: 'userManageInvitation',
+      meta: { title: 'userManageInvitation' }
+    },
+    {
+      path: '/userManage/address',
+      component: () => import('views/user-manage/receive-address'),
+      name: 'userManageAddress',
+      meta: { title: 'userManageAddress' }
+    },
+    {
+      path: '/userManage/integral',
+      component: () => import('views/user-manage/integral'),
+      name: 'userManageIntegral',
+      meta: { title: 'userManageIntegral' }
     }
   ]
 }

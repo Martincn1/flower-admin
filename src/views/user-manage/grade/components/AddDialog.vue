@@ -78,7 +78,7 @@ export default {
         if (isEmpty(val)) {
           this.modifyForm = { ...defaultFields }
         } else {
-          const { id, status } = val
+          const { id, status, name } = val
           this.modifyForm = { id, name, status }
         }
       },

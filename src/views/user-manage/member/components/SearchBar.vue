@@ -65,7 +65,7 @@ import searchMixins from 'mixins/search-mixins'
 
 import { COMMON_REQUEST_ENUM } from 'config/common'
 
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
   components: {},
@@ -95,14 +95,6 @@ export default {
     teacherList() {
       const { TEACHER } = COMMON_REQUEST_ENUM
       return this.remoteData[TEACHER] ?? []
-    }
-  },
-  watch: {},
-  methods: {
-    ...mapActions('commonRequest', ['fetchSelectList']),
-    async remoteHandler(name, type) {
-      if (!name) return
-      await this.fetchSelectList({ params: { name }, type })
     }
   }
 }
