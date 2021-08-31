@@ -37,7 +37,7 @@ import { tableProps } from 'config/columns/index.js'
 
 import Columns from './config/list-columns'
 
-import { cloneDeep } from 'lodash-es'
+// import { cloneDeep } from 'lodash-es'
 
 import OperateBtnConfigs from './config/operate-btn'
 
@@ -73,13 +73,8 @@ export default {
     },
     columns() {
       const handlers = {
-        modifyHandler: (row) => {
-          let { pushTime, endTime } = row
-          pushTime = row.pushTime * 1000
-          endTime = row.endTime * 1000
-          this.modifyData = cloneDeep({ ...row, pushTime, endTime })
-          this.modifyVisible = true
-        }
+        changeStatus: (val, row) => this.changeStatus(val, row),
+        modifyHandler: this.modifyHandler
       }
       return Columns(handlers)
     },

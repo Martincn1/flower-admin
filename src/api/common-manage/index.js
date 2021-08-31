@@ -49,7 +49,7 @@ export function updateCourseTypesBinUserInfo(params) {
 
 // 小程序首页banner图
 export function getHomeBannerList(params) {
-  return axios.post('/admin/MiniConfig', params)
+  return axios.get('/admin/MiniConfig', params)
 }
 
 export function addHomeBannerInfo(params) {
