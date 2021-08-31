@@ -61,9 +61,9 @@ export const imageColumn = {
 }
 
 export const courseTypeColumn = {
-  prop: 'courseType.type',
+  prop: 'courseType.name',
   label: '课程类型',
-  formatter: (row) => formatNormalize(row?.courseType?.type)
+  formatter: (row) => formatNormalize(row?.courseType?.name)
 }
 
 export const optionColumn = (modifyHandler, modifyPassHandler) => ({
@@ -108,6 +108,7 @@ export const optionColumn = (modifyHandler, modifyPassHandler) => ({
 export default ({ modifyHandler, modifyPassHandler }) => ([
   checkBoxColumn,
   serialColumn,
+  nameColumn,
   createAtColumn,
   priceColumn,
   dayColumn,

@@ -30,7 +30,7 @@ import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 
-import { getCourseList, courseTypeList } from 'api/course-manage/course.js'
+import { getGoodsList } from 'api/goods-manage/goods.js'
 import listMixins from 'mixins/list-mixins'
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
@@ -102,10 +102,10 @@ export default {
         pageSize,
         ...this.searchObj
       }
-      const { _success, data } = await getCourseList(params)
+      const { _success, data } = await getGoodsList(params)
       if (!_success) return
       this.list = data.data
-      console.log(this.list, 'this.list')
+      console.log(this.list, 'this.list --- good')
       this.pageObj.total = data.total
     },
     // async addTeacherEvent(obj) {
@@ -116,9 +116,7 @@ export default {
     //   this.fetchData()
     // },
     async getCourseTypeList() {
-      const { _success, data } = await courseTypeList()
-      if (!_success) return
-      console.log(data, 'data')
+      console.log('data')
     }
   }
 }
