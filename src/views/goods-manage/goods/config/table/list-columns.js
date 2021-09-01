@@ -2,7 +2,8 @@ import {
   basicColumnField,
   imageColumnField,
   tagColumnField,
-  optionColumnField
+  optionColumnField,
+  checkBoxColumn
 } from 'config/columns/index'
 
 import {
@@ -11,6 +12,7 @@ import {
 } from 'enums/goods-manage/index'
 
 export default ({ modifyHandler }) => ([
+  checkBoxColumn,
   basicColumnField({ prop: 'id', label: '编号' }),
   basicColumnField({ prop: 'name', label: '商品名称' }),
   basicColumnField({ prop: 'createdAt', label: '创建时间' }),

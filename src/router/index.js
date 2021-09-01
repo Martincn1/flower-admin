@@ -19,6 +19,8 @@ import goodsManageRouter from './modules/goods-manage'
 import taskManageRouter from './modules/task-manage'
 import orderManageRouter from './modules/order-manage'
 import commonManageRouter from './modules/common-manage'
+import applyManageRouter from './modules/apply-manage'
+import integralManageRouter from './modules/integral-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -135,7 +137,9 @@ export const constantRoutes = [
   goodsManageRouter,
   taskManageRouter,
   commonManageRouter,
-  orderManageRouter
+  orderManageRouter,
+  applyManageRouter,
+  integralManageRouter
 ]
 
 /**

@@ -4,7 +4,8 @@ import Layout from '@/layout'
 const orderManageRouter = {
   path: '/order',
   component: Layout,
-  name: ' order',
+  alwaysShow: true,
+  name: 'order',
   meta: {
     title: 'order',
     // TODO: icon 后续修改
