@@ -12,24 +12,27 @@
       label-width="80px"
       :rules="rules"
     >
-      <el-form-item label="教师姓名" prop="name">
+      <el-form-item label="课程名称" prop="name">
         <el-input v-model="addForm.name" placeholder="请输入教师姓名" />
       </el-form-item>
-      <el-form-item label="账号" prop="number">
-        <el-input v-model="addForm.number" placeholder="请输入账号" />
+      <el-form-item label="课程类型" prop="course_type_id">
+        <el-radio-group v-model="addForm.course_type_id" @change="typeChange">
+          <el-radio v-for="item in typeList" :key="item.id" :label="item.id">{{ item.name }}</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="密码" prop="pass">
+      <el-form-item class="course-photo" label="课程图片" prop="img">
         <el-input
-          v-model="addForm.pass"
-          type="password"
-          placeholder="请输入密码"
+          v-model="addForm.img"
+          type="text"
+          placeholder="请输入课程图片"
           autocomplete="off"
         />
+        <el-button type="primary">图片上传</el-button>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
         <el-input
           v-model="addForm.checkPass"
-          type="password"
+          type="text"
           placeholder="请确认密码"
           autocomplete="off"
         />
@@ -43,6 +46,9 @@
 </template>
 
 <script>
+import { COMMON_REQUEST_ENUM } from 'config/common'
+import { mapState } from 'vuex'
+
 export default {
   components: {},
   props: {
@@ -55,13 +61,17 @@ export default {
     return {
       addForm: {
         name: '',
-        number: '',
-        pass: '',
-        checkPass: ''
+        img: '',
+        course_type_id: ''
       }
     }
   },
   computed: {
+    ...mapState('commonRequest', ['remoteData']),
+    typeList() {
+      const { COURSE_TYPE } = COMMON_REQUEST_ENUM
+      return this.remoteData[COURSE_TYPE] ?? []
+    },
     visibleDialog: {
       get() {
         return this.visible
@@ -73,7 +83,7 @@ export default {
     rules() {
       return {
         name: [
-          { required: true, message: '请输入教师姓名', trigger: 'blur' },
+          { required: true, message: '请输入课程名称', trigger: 'blur' },
           { min: 2, max: 18, message: '长度在 2 到 18 个字符', trigger: 'blur' }
         ],
         number: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -91,6 +101,9 @@ export default {
   },
   watch: {},
   methods: {
+    typeChange(e) {
+      console.log(e, 'e')
+    },
     handlerClose() {
       this.$refs.addForm.resetFields()
     },
@@ -134,3 +147,10 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+
+/deep/ .el-radio {
+  margin-bottom: 10px;
+}
+</style>

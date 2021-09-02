@@ -8,12 +8,12 @@
     <el-form-item label="课程名称" prop="name">
       <el-input v-model.trim="searchObj.name" placeholder="请输入课程名称" clearable />
     </el-form-item>
-    <el-form-item label="课程类型" prop="courseType">
+    <el-form-item label="课程类型" prop="course_type_id">
       <base-select
-        v-model="searchObj.courseType"
-        placeholder="请选择状态"
-        :options="statusList"
-        :key-values="{value: 'code', label: 'label'}"
+        v-model="searchObj.course_type_id"
+        placeholder="请选择类型"
+        :options="typeList"
+        :key-values="{value: 'id', label: 'name'}"
       />
     </el-form-item>
     <el-form-item>
@@ -24,11 +24,9 @@
 </template>
 
 <script>
-import { enumObj2CodeLabArr } from 'utils/util'
-
-import { COMMON_STATUS_MAP } from 'enums/common/index'
-
 import searchMixins from 'mixins/search-mixins'
+import { COMMON_REQUEST_ENUM } from 'config/common'
+import { mapState } from 'vuex'
 
 export default {
   components: {},
@@ -40,8 +38,10 @@ export default {
     }
   },
   computed: {
-    statusList() {
-      return enumObj2CodeLabArr(COMMON_STATUS_MAP)
+    ...mapState('commonRequest', ['remoteData']),
+    typeList() {
+      const { COURSE_TYPE } = COMMON_REQUEST_ENUM
+      return this.remoteData[COURSE_TYPE] ?? []
     }
   },
   watch: {},

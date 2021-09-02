@@ -46,3 +46,8 @@ export function getGradeList(params, globalLoading = false) {
     globalLoading
   })
 }
+
+// 获取课程分类下拉列表
+export function courseTypeList(params) {
+  return axios.get('/admin/CourseTypeList', { params })
+}

@@ -6,6 +6,7 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
+      :table-events="tableEvents"
     />
     <pagination
       style="text-align: center;"
@@ -16,10 +17,10 @@
     />
     <add-dialog
       width="50%"
-      title="添加教师"
+      title="添加"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      :visible.sync="addTeacherVisible"
+      :visible.sync="addCourseVisible"
     />
     <!-- @on-add="addTeacherEvent" -->
   </div>
@@ -30,13 +31,13 @@ import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 
-import { getCourseList, courseTypeList } from 'api/course-manage/course.js'
+import { getCourseList } from 'api/course-manage/course.js'
 import listMixins from 'mixins/list-mixins'
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
 import ColumnsConfig from './config/table/list-columns'
 import OperateBtnConfigs from './config/operate-btn'
-import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
 import { cloneDeep } from 'lodash-es'
 
 export default {
@@ -50,12 +51,12 @@ export default {
     return {
       searchObj: {},
       list: [],
-      addTeacherVisible: false,
-      modifyData: {}
+      addCourseVisible: false,
+      modifyData: {},
+      selectedRows: []
     }
   },
   computed: {
-    ...mapState('commonRequest', ['remoteData']),
     gradeList() {
       const { GRADE } = COMMON_REQUEST_ENUM
       return this.remoteData[GRADE] ?? []
@@ -64,6 +65,11 @@ export default {
       return {
         ...tableProps,
         data: this.list
+      }
+    },
+    tableEvents() {
+      return {
+        'selection-change': this.selectionChange
       }
     },
     columns() {
@@ -78,9 +84,13 @@ export default {
     },
     operateConfigs() {
       const handlers = {
-        addTeacherHandler: () => {
-          this.addTeacherVisible = true
-        }
+        addCourseHandler: () => {
+          this.addCourseVisible = true
+        },
+        editCourseHandler: this.modifyEndAtHandler,
+        delCourseHandler: this.modifyEndAtHandler,
+        checkCourseHandler: this.modifyEndAtHandler,
+        generateCodeHandler: this.modifyEndAtHandler
       }
       return OperateBtnConfigs(handlers)
     }
@@ -91,6 +101,22 @@ export default {
     this.getCourseTypeList()
   },
   methods: {
+    ...mapActions('commonRequest', ['fetchSelectList']),
+    selectionChange(selection) {
+      this.selectedRows = selection.map(({ id }) => id)
+    },
+    modifyEndAtHandler() {
+      console.log('click popup')
+      const LEN = this.selectedRows.length
+      const warnEnum = {
+        0: '请选择一行数据',
+        1: '最多选择一行'
+      }
+      if (LEN !== 1) {
+        this.$message.warning(warnEnum[+!!LEN])
+        return
+      }
+    },
     async changeStatus(val, row) {
       console.log(val, 'course -- val')
       console.log(row, 'course -- row')
@@ -116,9 +142,9 @@ export default {
     //   this.fetchData()
     // },
     async getCourseTypeList() {
-      const { _success, data } = await courseTypeList()
-      if (!_success) return
-      console.log(data, 'data')
+      console.log('进入了getCourseTypeList')
+      const { COURSE_TYPE } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: COURSE_TYPE })
     }
   }
 }

@@ -14,8 +14,3 @@ export function createCourse(data) {
 export function editCourse(data) {
   return axios.post('/admin/Course', data)
 }
-
-// 获取课程分类下拉列表
-export function courseTypeList(params) {
-  return axios.get('/admin/CourseTypeList', { params })
-}
