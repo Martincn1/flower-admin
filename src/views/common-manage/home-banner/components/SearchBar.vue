@@ -5,14 +5,11 @@
     inline
     class="padding-16"
   >
-    <el-form-item label="文字标题" prop="word_title">
-      <el-input v-model.trim="searchObj.word_title" placeholder="请输入文字标题" clearable />
-    </el-form-item>
-    <el-form-item label="年级" prop="grade_id">
+    <el-form-item label="类型" prop="type">
       <base-select
-        v-model="searchObj.grade_id"
-        placeholder="请选择年级"
-        :options="gradeList"
+        v-model="searchObj.type"
+        placeholder="请选择类型"
+        :options="miniConfigList"
         :key-values="{value: 'id', label: 'name'}"
       />
     </el-form-item>
@@ -34,7 +31,12 @@ import { mapState } from 'vuex'
 export default {
   components: {},
   mixins: [searchMixins],
-  props: {},
+  props: {
+    miniConfigList: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
     return {
       searchObj: {}

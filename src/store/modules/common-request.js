@@ -12,7 +12,8 @@ export default {
       AGENT: [],
       GRADE: [],
       PUSH_COURSE: [],
-      COUNT: []
+      COUNT: [],
+      PUSH_WORD: []
     }
   },
   mutations: {

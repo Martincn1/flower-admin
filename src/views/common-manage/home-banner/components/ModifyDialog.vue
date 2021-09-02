@@ -12,55 +12,41 @@
       label-width="120px"
       :rules="rules"
     >
-      <el-form-item label="课程标题" prop="title">
-        <el-input v-model.trim="modifyForm.title" />
-      </el-form-item>
-      <el-form-item label="文字标题" prop="word_title">
-        <el-input v-model.trim="modifyForm.word_title" />
-      </el-form-item>
-      <el-form-item label="年级ID" prop="grade_id">
+      <el-form-item label="类型" prop="title">
         <base-select
-          v-model="modifyForm.grade_id"
-          placeholder="请选择年级"
-          :options="gradeList"
+          v-model="modifyForm.type"
+          placeholder="请选择类型"
+          :options="miniConfigList"
           :key-values="{value: 'id', label: 'name'}"
         />
       </el-form-item>
-      <el-form-item label="推送时间" prop="push_time">
-        <el-date-picker
-          v-model="modifyForm.push_time"
-          type="date"
-          clearable
-          placeholder="选择推送时间"
-          value-format="timestamp"
-        />
+      <el-form-item label="头像">
+        <avatar-upload :url.sync="modifyForm.image" :finish:sync="disabled" />
       </el-form-item>
-      <el-form-item label="结素时间" prop="end_time">
-        <el-date-picker
-          v-model="modifyForm.end_time"
-          type="date"
-          clearable
-          placeholder="选择结束时间"
-          value-format="timestamp"
-        />
+      <el-form-item label="路由" prop="route">
+        <el-input v-model.trim="modifyForm.route" />
+      </el-form-item>
+      <el-form-item label="是否禁用" prop="status">
+        <el-radio-group v-model="modifyForm.status">
+          <el-radio :label="commonStatusEnum.DISABLED">是</el-radio>
+          <el-radio :label="commonStatusEnum.NORMAL">否</el-radio>
+        </el-radio-group>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button class="ml-8" @click="visibleDialog = false">取消</el-button>
-      <el-button type="primary" @click="submitForm">确定</el-button>
+      <el-button class="ml-8" :disabled="disabled" @click="visibleDialog = false">取消</el-button>
+      <el-button type="primary" :disabled="disabled" @click="submitForm">确定</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script>
 
+import { COMON_STATUS_ENUM } from 'enums/common/index.js'
+
 import { enumFormItemMap } from 'utils/util'
 
-import { PUSH_COURSE_MODIFY_ENUM } from 'config/fields/modify'
-
-import { COMMON_REQUEST_ENUM } from 'config/common'
-
-import { mapState } from 'vuex'
+import { MINI_CONFIG_MODIFY_ENUM } from 'config/fields/modify'
 
 export default {
   components: {},
@@ -72,15 +58,20 @@ export default {
     modifyData: {
       type: Object,
       default: () => ({})
+    },
+    miniConfigList: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
-      modifyForm: enumFormItemMap(PUSH_COURSE_MODIFY_ENUM)
+      modifyForm: enumFormItemMap(MINI_CONFIG_MODIFY_ENUM),
+      commonStatusEnum: Object.freeze(COMON_STATUS_ENUM),
+      disabled: false
     }
   },
   computed: {
-    ...mapState('commonRequest', ['remoteData']),
     visibleDialog: {
       get() {
         return this.visible
@@ -91,16 +82,12 @@ export default {
     },
     rules() {
       return {}
-    },
-    gradeList() {
-      const { GRADE } = COMMON_REQUEST_ENUM
-      return this.remoteData[GRADE] ?? []
     }
   },
   watch: {
     modifyData: {
       handler(val) {
-        this.modifyForm = enumFormItemMap(PUSH_COURSE_MODIFY_ENUM, val)
+        this.modifyForm = enumFormItemMap(MINI_CONFIG_MODIFY_ENUM, val)
       },
       deep: true,
       immediate: true

@@ -46,3 +46,10 @@ export function getGradeList(params, globalLoading = false) {
     globalLoading
   })
 }
+
+// 文字下拉列表
+export function getWordList(params, globalLoading = false) {
+  return axios.get('/admin/WordList', { params }, {
+    globalLoading
+  })
+}

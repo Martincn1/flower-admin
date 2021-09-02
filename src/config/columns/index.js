@@ -1,7 +1,5 @@
 import { formatNormalize } from 'utils/filter'
 
-import { isObject } from 'lodash-es'
-
 // 表格的基础配置
 export const tableProps = {
   stripe: true,
@@ -14,142 +12,138 @@ export const tableProps = {
   rowStyle: { color: '#606266' }
 }
 
-// 勾选框
-export const checkBoxColumn = {
-  type: 'selection',
-  width: 55
-}
-
 /**
- * 表格字段处理
+ * 表格字段处理 --修改
 */
+export default class ColumnFieldClass {
+  /**
+   * @example {type: 'base', field: ***, prop: ***, width: ***, formatter:(row) => ***}
+  */
+  static base(config) {
+    return config
+  }
 
-// 常规字段 - 只需做formatter处理的
-export const basicColumnField = ({ prop, label }, options) => {
-  const { fieldMap, key } = options ?? {}
-  return {
-    prop,
-    label,
-    formatter: (row) => {
-      let field = row[prop]
-      if (isObject(field)) {
-        field = prop?.[key]
-      }
-      const formatField = fieldMap ? fieldMap[field] : field
-      return formatNormalize(formatField)
+  /**
+   * @example {type: 'selection',}
+   */
+  static selection(config) {
+    return {
+      type: 'selection',
+      ...config
     }
   }
-}
 
-// 时间戳类
-export const stampColumnField = ({ prop, label }, format) => {
-  return {
-    prop,
-    label,
-    formatter: (row) => format(row)
-  }
-}
-
-// 地区地段拼接
-export const areaColumnField = ({ prop, label }) => {
-  return {
-    prop,
-    label,
-    formatter: (row) => {
-      const { p, c, d } = row
-      const formatField = `${p}-${c}-${d}`
-      return formatField
-    }
-  }
-}
-
-// 头像字段
-export const imageColumnField = ({ prop, label }, options) => {
-  const { fit = 'cover', width = '60px', height = '60px' } = options ?? {}
-  return { prop,
-    label,
-    scopedSlots: h => ({
-      default({ row }) {
-        return h('image-view', {
-          props: {
-            src: row[prop],
-            fit: fit
-          },
-          style: {
-            width,
-            height
-          }
-        })
-      }
-    })
-  }
-}
-
-// 标签字段
-export const tagColumnField = ({ prop, label }, options) => {
-  const { styleMap, fieldMap } = options ?? {}
-  return {
-    prop,
-    label,
-    scopedSlots: h => {
-      return {
+  /**
+   * @example {type: 'image', field: ***, prop: ***, width: ***, slots: {****}}
+  */
+  static image(config, slots) {
+    const { prop } = config
+    const { fit, width, height, popover } = slots ?? {}
+    return {
+      ...config,
+      scopedSlots: h => ({
         default({ row }) {
-          return h('el-tag', {
+          return h('image-view', {
             props: {
-              type: styleMap[row[prop]]
-            }
-          }, formatNormalize(fieldMap[row[prop]]))
-        }
-      }
-    }
-  }
-}
-
-// 开关类 -- onEvent 代表事件，当前只能匹配单个事件，目前先这样
-export const switchColumnField = ({ prop, label, activeValue = true, inactiveValue = false }, options) => {
-  const { onEvent } = options
-  return {
-    prop,
-    label,
-    scopedSlots: h => {
-      return {
-        default({ row }) {
-          return h('el-switch', {
-            props: {
-              value: row[prop],
-              activeValue,
-              inactiveValue
+              src: row[prop],
+              fit: fit || 'cover',
+              popover: popover || true
             },
-            on: {
-              change: (val) => onEvent(val, row)
+            style: {
+              width: width || '60px',
+              height: height || '60px'
             }
           })
         }
+      })
+    }
+  }
+
+  /**
+   *@example {type: 'tag', prop: ***, ... slots: {styleMap: ***, fieldMap: ***}}
+   */
+  static tag(config, slots) {
+    const { prop } = config
+    const { styleMap, fieldMap } = slots
+    return {
+      ...config,
+      scopedSlots: h => {
+        return {
+          default({ row }) {
+            return h('el-tag', {
+              props: {
+                type: styleMap[row[prop]]
+              }
+            }, formatNormalize(fieldMap[row[prop]]))
+          }
+        }
       }
     }
   }
-}
 
-// 操作类
-export const optionColumnField = ({ label }, configs) => {
-  return {
-    label,
-    scopedSlots: h => ({
-      default({ row }) {
-        const operationConfigs = configs.map(config => {
-          const { type, size = 'mini', txt, onEvent } = config
-          return h('el-button', {
-            props: {
-              type,
-              size
-            },
-            on: {
-              click: () => onEvent(row)
-            }
-          }, txt)
-        })
-        return h('div', null, operationConfigs)
+  /**
+   *@example {type: 'switch', prop: ***, ... slots: {styleMap: ***, fieldMap: ***}}
+   */
+  static switch(config, slots) {
+    const { prop } = config
+    const { activeValue, inactiveValue, event } = slots ?? {}
+    return {
+      ...config,
+      scopedSlots: h => {
+        return {
+          default({ row }) {
+            return h('el-switch', {
+              props: {
+                value: row[prop],
+                activeValue: activeValue || true,
+                inactiveValue: inactiveValue || true
+              },
+              on: {
+                change: (val) => event(val, row)
+              }
+            })
+          }
+        }
       }
-    })
+    }
+  }
+
+  /**
+   *@example {type: 'operate', label: ***, ... slots: [***]}
+   */
+  static operate(config, slots = []) {
+    return {
+      ...config,
+      scopedSlots: h => ({
+        default({ row }) {
+          const operationConfigs = slots.map(config => {
+            const { type, size = 'mini', title, onEvent } = config
+            return h('el-button', {
+              props: {
+                type,
+                size
+              },
+              on: {
+                click: () => onEvent(row)
+              }
+            }, title)
+          })
+          return h('div', null, operationConfigs)
+        }
+      })
+    }
+  }
+
+  static generateField(configs) {
+    const res = []
+    try {
+      for (const config of configs) {
+        const { type, slots, ...rest } = config
+        res.push(this[type](rest, slots))
+      }
+    } catch (error) {
+      console.error(error)
+    }
+    return res
   }
 }

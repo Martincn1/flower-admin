@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
-    <search-bar @on-search="searchHandler" />
+    <search-bar :mini-config-list="miniConfigList" @on-search="searchHandler" />
     <operate-btn :operate-config="operateConfigs" class="margin-bottom-16" />
     <table-render
       table-type="el-table"
@@ -21,6 +21,7 @@
       :close-on-press-escape="false"
       :visible.sync="modifyVisible"
       :modify-data="modifyData"
+      :mini-config-list="miniConfigList"
       @on-add="modifyInfoHandler"
     />
   </div>
@@ -37,17 +38,13 @@ import { tableProps } from 'config/columns/index.js'
 
 import Columns from './config/list-columns'
 
-// import { cloneDeep } from 'lodash-es'
-
 import OperateBtnConfigs from './config/operate-btn'
 
 import { COMMON_REQUEST_ENUM } from 'config/common'
 
-import { getHomeBannerList, addPushCourseInfo, updatePushCourseInfo } from 'api/common-manage/index.js'
+import { getHomeBannerList, addHomeBannerInfo, updateHomeBannerInfo, miniConfigList } from 'api/common-manage/index.js'
 
 import { mapActions } from 'vuex'
-
-import dayjs from 'dayjs'
 
 export default {
   components: {
@@ -61,7 +58,8 @@ export default {
       searchObj: {},
       list: [],
       modifyVisible: false,
-      modifyData: {}
+      modifyData: {},
+      miniConfigList: []
     }
   },
   computed: {
@@ -74,9 +72,12 @@ export default {
     columns() {
       const handlers = {
         changeStatus: (val, row) => this.changeStatus(val, row),
-        modifyHandler: this.modifyHandler
+        modifyHandler: (row) => {
+          this.modifyData = row
+          this.modifyVisible = true
+        }
       }
-      return Columns(handlers)
+      return Columns(handlers, { miniConfigList: this.miniConfigList })
     },
     operateConfigs() {
       const handlers = {
@@ -91,6 +92,7 @@ export default {
   created() {
     this.fetchData()
     this.getGradeList()
+    this.getMiniConfig()
   },
   methods: {
     ...mapActions('commonRequest', ['fetchSelectList']),
@@ -101,15 +103,12 @@ export default {
     },
 
     async modifyInfoHandler(obj) {
-      const id = obj.id
-      let { push_time, end_time } = obj
-      push_time = dayjs(push_time).unix()
-      end_time = dayjs(end_time).unix()
+      const { id } = obj
       const apiEnum = {
-        0: addPushCourseInfo,
-        1: updatePushCourseInfo
+        0: addHomeBannerInfo,
+        1: updateHomeBannerInfo
       }
-      const { _success } = await apiEnum[+!!id]({ ...obj, push_time, end_time })
+      const { _success } = await apiEnum[+!!id](obj)
       if (!_success) return
       this.modifyVisible = false
       this.$message.success('操作成功')
@@ -126,7 +125,43 @@ export default {
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total
+    },
+    async getMiniConfig() {
+      const { _success, data } = await miniConfigList()
+      if (!_success) return
+      for (const [key, value] of Object.entries(data)) {
+        this.miniConfigList.push({
+          id: key,
+          name: value
+        })
+      }
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+::v-deep .img-wrap {
+  display: flex;
+  justify-content: center;
+  border-radius: 4px;
+
+  .image-view {
+    width: 40px !important;
+    height: 40px !important;
+    background-color: rgba(236, 235, 235, 0.86);
+
+    .el-image {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+
+      .el-image__inner {
+        width: auto;
+        max-width: 100% !important;
+        height: auto;
+        max-height: 100% !important;
+      }
+    }
+  }
+}
+</style>

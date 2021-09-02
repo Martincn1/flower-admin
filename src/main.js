@@ -24,6 +24,11 @@ import GlobalComponents from 'components/global.js'
 
 import * as filters from './filters' // global filters
 
+import AudioPlayer from '@liripeng/vue-audio-player'
+import '@liripeng/vue-audio-player/lib/vue-audio-player.css'
+
+Vue.use(AudioPlayer)
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
