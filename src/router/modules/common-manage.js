@@ -42,6 +42,12 @@ const commonManageRouter = {
       component: () => import('views/common-manage/level-manage'),
       name: 'commonManageLevel',
       meta: { title: 'commonManageLevel' }
+    },
+    {
+      path: 'pushword',
+      component: () => import('views/common-manage/push-word'),
+      name: 'commonManagePushword',
+      meta: { title: 'commonManagePushword' }
     }
   ]
 }

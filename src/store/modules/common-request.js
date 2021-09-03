@@ -13,7 +13,8 @@ export default {
       GRADE: [],
       PUSH_COURSE: [],
       COUNT: [],
-      COURSE_TYPE: []
+      COURSE_TYPE: [],
+      PUSH_WORD: []
     }
   },
   mutations: {

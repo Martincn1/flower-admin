@@ -25,12 +25,15 @@ export default {
     url: {
       type: String,
       required: true
+    },
+    finish: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
     return {
-      percentage: 0,
-      disabled: false
+      percentage: 0
     }
   },
   computed: {
@@ -40,6 +43,14 @@ export default {
       },
       set(val) {
         return this.$emit('update:url', val)
+      }
+    },
+    disabled: {
+      get() {
+        return this.finish
+      },
+      set(val) {
+        return this.$emit('update:finish', val)
       }
     }
   },

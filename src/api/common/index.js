@@ -51,3 +51,10 @@ export function getGradeList(params, globalLoading = false) {
 export function courseTypeList(params) {
   return axios.get('/admin/CourseTypeList', { params })
 }
+
+// 文字下拉列表
+export function getWordList(params, globalLoading = false) {
+  return axios.get('/admin/WordList', { params }, {
+    globalLoading
+  })
+}

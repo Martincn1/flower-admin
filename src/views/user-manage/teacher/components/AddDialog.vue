@@ -20,7 +20,7 @@
         <el-input v-model="addForm.number" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="头像">
-        <avatar-upload :url.sync="addForm.image" />
+        <avatar-upload :url.sync="addForm.image" :finish:sync="disabled" />
       </el-form-item>
       <el-form-item v-if="!addForm.id" label="密码" prop="pass">
         <el-input
@@ -46,7 +46,7 @@
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button class="ml-8" @click="visibleDialog = false">取消</el-button>
+      <el-button class="ml-8" :disabled="disabled" @click="visibleDialog = false">取消</el-button>
       <el-button type="primary" :disabled="disabled" @click="submitForm">确定</el-button>
     </template>
   </el-dialog>

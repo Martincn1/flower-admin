@@ -20,6 +20,10 @@ import taskManageRouter from './modules/task-manage'
 import orderManageRouter from './modules/order-manage'
 import commonManageRouter from './modules/common-manage'
 import applyManageRouter from './modules/apply-manage'
+import agentManageRouter from './modules/agent-manage'
+import adminManageRouter from './modules/admin-manage'
+import permissionManageRouter from './modules/permission-manage'
+import lotteryManageRouter from './modules/lottery-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -137,7 +141,11 @@ export const constantRoutes = [
   taskManageRouter,
   commonManageRouter,
   orderManageRouter,
-  applyManageRouter
+  applyManageRouter,
+  agentManageRouter,
+  adminManageRouter,
+  permissionManageRouter,
+  lotteryManageRouter
 ]
 
 /**

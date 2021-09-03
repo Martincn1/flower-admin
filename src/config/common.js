@@ -6,7 +6,8 @@ export const COMMON_REQUEST_ENUM = {
   'COUNT_BRANCH': 'COUNT_BRANCH', // 课节下拉
   'PUSH_COURSE': 'PUSH_COURSE', // 课程推送
   'GRADE': 'GRADE', // 年级组下拉列表
-  'COURSE_TYPE': 'COURSE_TYPE' // 课程管理 - 课程类型下拉列表
+  'COURSE_TYPE': 'COURSE_TYPE', // 课程管理 - 课程类型下拉列表
+  'PUSH_WORD': 'PUSH_WORD'
 }
 
 export const COMMON_REQUEST_MAP = {
@@ -16,5 +17,6 @@ export const COMMON_REQUEST_MAP = {
   [COMMON_REQUEST_ENUM.COUNT_BRANCH]: 'getCourseBranchList',
   [COMMON_REQUEST_ENUM.PUSH_COURSE]: 'getPushCourseList',
   [COMMON_REQUEST_ENUM.GRADE]: 'getGradeList',
-  [COMMON_REQUEST_ENUM.COURSE_TYPE]: 'courseTypeList'
+  [COMMON_REQUEST_ENUM.COURSE_TYPE]: 'courseTypeList',
+  [COMMON_REQUEST_ENUM.PUSH_WORD]: 'getWordList'
 }

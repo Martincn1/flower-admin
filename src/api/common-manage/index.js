@@ -49,7 +49,7 @@ export function updateCourseTypesBinUserInfo(params) {
 
 // 小程序首页banner图
 export function getHomeBannerList(params) {
-  return axios.post('/admin/MiniConfig', params)
+  return axios.get('/admin/MiniConfig', { params })
 }
 
 export function addHomeBannerInfo(params) {
@@ -58,4 +58,38 @@ export function addHomeBannerInfo(params) {
 
 export function updateHomeBannerInfo(params) {
   return axios.post('/admin/MiniConfig', params)
+}
+
+export function miniConfigList(params) {
+  return axios.get('/admin/MiniConfigList', { params })
+}
+
+// 学员等级
+export function getLevelList(params) {
+  return axios.get('/admin/Level', { params })
+}
+
+export function addLevelInfo(params) {
+  return axios.put('/admin/Level', params)
+}
+
+export function updateLevelInfo(params) {
+  return axios.post('/admin/Level', params)
+}
+
+// 推送课程文字
+export function getPushWordList(params) {
+  return axios.get('/admin/PushCourseWord', { params })
+}
+
+export function addPushWordInfo(params) {
+  return axios.put('/admin/PushCourseWord', params)
+}
+
+export function updatePushWordInfo(params) {
+  return axios.post('/admin/PushCourseWord', params)
+}
+
+export function deletePushWordInfo(params) {
+  return axios.delete('/admin/PushCourseWord', params)
 }

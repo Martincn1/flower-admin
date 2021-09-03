@@ -40,10 +40,12 @@ export const voiceColumn = {
   label: '点评语音',
   scopedSlots: h => ({
     default({ row }) {
-      return h('audio', {
+      return h('AudioPlayer', {
         props: {
-          src: row.voice,
-          controls: true
+          audioList: [row.voice],
+          'show-prev-button': false,
+          'show-next-button': false,
+          'isLoop': false
         }
       })
     }

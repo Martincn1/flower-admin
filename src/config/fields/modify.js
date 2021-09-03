@@ -39,3 +39,65 @@ export const PUSH_COURSE_MODIFY_ENUM = {
   push_time: 'pushTime',
   end_time: 'endTime'
 }
+
+// 小程序配置 - 编辑
+export const MINI_CONFIG_MODIFY_ENUM = {
+  id: 'id',
+  type: 'type',
+  image: 'image',
+  route: 'route',
+  status: 'status'
+}
+
+// 学员等级 - 编辑
+export const LEVEL_MODIFY_ENUM = {
+  name: 'name',
+  num: 'num',
+  id: 'id'
+}
+
+// 经销商 - 编辑
+export const AGENT_MODIFY_ENUM = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  user_name: 'userName',
+  account: 'account',
+  branch: 'branch',
+  id_number: 'idNumber',
+  proportion: 'proportion',
+  tax: 'tax',
+  status: 'status'
+}
+
+// 后台账户 - 编辑
+export const ADMIN_MODIFY_ENUM = {
+  id: 'id',
+  name: 'name',
+  account: 'account',
+  status: 'status',
+  image: 'image'
+}
+
+// 角色 - 编辑
+export const ROLE_MODIFY_ENUM = {
+  id: 'id',
+  name: 'name',
+  status: 'status'
+}
+
+// 推送课程文字 - 编辑
+export const PUSH_WORD_MODIFY_ENUM = {
+  id: 'id',
+  push_course_id: 'pushCourseId',
+  word_id: 'wordId'
+}
+
+// 奖品管理 - 编辑
+export const PRIZE_MODIFY_ENUM = {
+  id: 'id',
+  name: 'name',
+  img: 'img',
+  num: 'num',
+  chance: 'chance'
+}
