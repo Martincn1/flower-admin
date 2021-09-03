@@ -21,6 +21,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="addCourseVisible"
+      @on-add="addCourse"
     />
     <!-- @on-add="addTeacherEvent" -->
   </div>
@@ -31,7 +32,7 @@ import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 
-import { getCourseList } from 'api/course-manage/course.js'
+import { getCourseList, createCourse } from 'api/course-manage/course.js'
 import listMixins from 'mixins/list-mixins'
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
@@ -102,11 +103,17 @@ export default {
   },
   methods: {
     ...mapActions('commonRequest', ['fetchSelectList']),
+    async addCourse(val) {
+      const { _success } = await createCourse(val)
+      if (!_success) return
+      this.addCourseVisible = false
+      this.$message.success('操作成功')
+      this.fetchData()
+    },
     selectionChange(selection) {
       this.selectedRows = selection.map(({ id }) => id)
     },
     modifyEndAtHandler() {
-      console.log('click popup')
       const LEN = this.selectedRows.length
       const warnEnum = {
         0: '请选择一行数据',
@@ -131,7 +138,6 @@ export default {
       const { _success, data } = await getCourseList(params)
       if (!_success) return
       this.list = data.data
-      console.log(this.list, 'this.list')
       this.pageObj.total = data.total
     },
     // async addTeacherEvent(obj) {
@@ -142,7 +148,6 @@ export default {
     //   this.fetchData()
     // },
     async getCourseTypeList() {
-      console.log('进入了getCourseTypeList')
       const { COURSE_TYPE } = COMMON_REQUEST_ENUM
       await this.fetchSelectList({ type: COURSE_TYPE })
     }

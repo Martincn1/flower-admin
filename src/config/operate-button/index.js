@@ -36,7 +36,7 @@ export const deleteBtn = (deleteHandler, options = {}) => ({
 export const examineBtn = (examineHandler, options = {}) => ({
   type: 'primary',
   size: 'mini',
-  txt: '查看',
+  title: '查看',
   onEvent: examineHandler,
   ...options
 })

@@ -13,7 +13,7 @@
       :rules="rules"
     >
       <el-form-item label="课程名称" prop="name">
-        <el-input v-model="addForm.name" placeholder="请输入教师姓名" />
+        <el-input v-model="addForm.name" placeholder="请输入课程名称" />
       </el-form-item>
       <el-form-item label="课程类型" prop="course_type_id">
         <el-radio-group v-model="addForm.course_type_id" @change="typeChange">
@@ -27,7 +27,7 @@
           placeholder="请输入课程图片"
           autocomplete="off"
         />
-        <el-button type="primary">图片上传</el-button>
+        <avatar-upload :url.sync="addForm.img" :finish.sync="disabled" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -51,6 +51,7 @@ export default {
   },
   data() {
     return {
+      disabled: false,
       addForm: {
         name: '',
         img: '',
@@ -132,8 +133,7 @@ export default {
     submitForm() {
       this.$refs.addForm.validate((valid) => {
         if (!valid) return
-        const { name, number, pass } = this.addForm
-        this.$emit('on-add', { name, number, pass })
+        this.$emit('on-add', this.addForm)
       })
     }
   }
@@ -145,6 +145,7 @@ export default {
   .el-input {
     width: 379px;
     margin-right: 20px;
+    margin-bottom: 10px;
   }
 }
 /deep/ .el-radio {
