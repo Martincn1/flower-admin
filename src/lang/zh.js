@@ -33,10 +33,6 @@ export default {
     commonManageLevel: '学员等级管理',
     order: '订单管理',
     orderList: '用户订单管理',
-    integralManage: '积分商城管理',
-    integralManageGoodsManage: '积分商品管理',
-    integralManageClockRecord: '打卡记录',
-    integralManageIntegralExchange: '积分兑换',
 
     dashboard: '首页',
     documentation: '文档',

@@ -29,14 +29,6 @@
         />
         <el-button type="primary">图片上传</el-button>
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input
-          v-model="addForm.checkPass"
-          type="text"
-          placeholder="请确认密码"
-          autocomplete="off"
-        />
-      </el-form-item>
     </el-form>
     <template #footer>
       <el-button class="ml-8" @click="visibleDialog = false">取消</el-button>
@@ -149,7 +141,12 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
+.course-photo {
+  .el-input {
+    width: 379px;
+    margin-right: 20px;
+  }
+}
 /deep/ .el-radio {
   margin-bottom: 10px;
 }
