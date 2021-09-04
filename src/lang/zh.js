@@ -43,6 +43,9 @@ export default {
     lottery: '抽奖管理',
     prizeManageList: '奖品管理',
     recordList: '中奖记录',
+    exchange: '图书兑换码管理',
+    exchangeList: '图书兑换码列表',
+    withdrawl: '提现记录',
 
     dashboard: '首页',
     documentation: '文档',

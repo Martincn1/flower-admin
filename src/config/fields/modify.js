@@ -101,3 +101,10 @@ export const PRIZE_MODIFY_ENUM = {
   num: 'num',
   chance: 'chance'
 }
+
+// 提现记录 = 编辑
+export const WITH_DRAWAL_ENUM = {
+  id: 'id',
+  is_pay: 'isPay',
+  remarks: 'remarks'
+}
