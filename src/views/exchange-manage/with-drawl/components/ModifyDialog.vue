@@ -20,7 +20,7 @@
           :key-values="{value: 'code', label: 'label'}"
         />
       </el-form-item>
-      <el-form-item label="remarks" prop="备注">
+      <el-form-item label="备注" prop="remarks">
         <el-input v-model.trim="modifyForm.remarks" />
       </el-form-item>
     </el-form>
