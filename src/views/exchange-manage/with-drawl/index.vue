@@ -1,5 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
+    <search-bar @on-search="searchHandler" />
     <table-render
       table-type="el-table"
       :table-props="tableProps"
@@ -12,10 +13,21 @@
       @current-change="currentChange"
       @size-change="changePageSize"
     />
+    <modify-dialog
+      width="50%"
+      title="编辑"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :visible.sync="modifyVisible"
+      :modify-data="modifyData"
+      @on-add="modifyInfoHandler"
+    />
   </div>
 </template>
 
 <script>
+import ModifyDialog from './components/ModifyDialog.vue'
+import SearchBar from './components/SearchBar.vue'
 
 import listMixins from 'mixins/list-mixins'
 
@@ -23,9 +35,15 @@ import { tableProps } from 'config/columns/index.js'
 
 import Columns from './config/list-columns'
 
-import { getPrizeLog, updatePrizeLog } from 'api/lottery-manage'
+import { cloneDeep } from 'lodash-es'
+
+import { updateWithdrawlInfo, getWithdrawlList } from 'api/exchange-manage'
 
 export default {
+  components: {
+    ModifyDialog,
+    SearchBar
+  },
   mixins: [listMixins],
   data() {
     return {
@@ -44,7 +62,10 @@ export default {
     },
     columns() {
       const handlers = {
-        changeStatus: (val, row) => this.changeStatus(val, row)
+        modifyHandler: (row) => {
+          this.modifyData = cloneDeep(row)
+          this.modifyVisible = true
+        }
       }
       return Columns(handlers)
     }
@@ -53,12 +74,13 @@ export default {
     this.fetchData()
   },
   methods: {
-    async changeStatus(val, row) {
-      const { id } = row
-      const { _success } = await updatePrizeLog({ id, status: val })
+
+    async modifyInfoHandler(obj) {
+      const { _success } = await updateWithdrawlInfo(obj)
       if (!_success) return
+      this.modifyVisible = false
+      this.$message.success('操作成功')
       this.fetchData()
-      this.$message.success('修改成功')
     },
 
     async fetchData() {
@@ -68,7 +90,7 @@ export default {
         pageSize,
         ...this.searchObj
       }
-      const { _success, data } = await getPrizeLog(params)
+      const { _success, data } = await getWithdrawlList(params)
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total
