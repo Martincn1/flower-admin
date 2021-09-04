@@ -15,7 +15,13 @@ const exchangeManageRouter = {
       path: 'exchangeList',
       component: () => import('views/exchange-manage/exchange-list'),
       name: 'exchangeList',
-      meta: { title: 'prizeManageList', icon: 'documentation' }
+      meta: { title: 'exchangeList', icon: 'documentation' }
+    },
+    {
+      path: 'exchangeRecord',
+      component: () => import('views/exchange-manage/record'),
+      name: 'exchangeRecord',
+      meta: { title: 'exchangeRecord', icon: 'documentation' }
     },
     {
       path: 'withdrawl',

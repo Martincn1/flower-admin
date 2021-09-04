@@ -39,6 +39,10 @@ import Columns from './config/list-columns'
 
 import { getExchangeList, addExchangeInfo, deleteExchangeInfo } from 'api/exchange-manage'
 
+import { mapActions } from 'vuex'
+
+import { COMMON_REQUEST_ENUM } from 'config/common'
+
 export default {
   components: {
     ModifyDialog,
@@ -76,8 +80,10 @@ export default {
   },
   created() {
     this.fetchData()
+    this.getCourseList()
   },
   methods: {
+    ...mapActions('commonRequest', ['fetchSelectList']),
     async deleteHandler(row) {
       const { confirm } = await this.$confirmBox('请确认是否继续删除？', '提示', {
         cancelButtonText: '我再想想'
@@ -109,6 +115,11 @@ export default {
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total
+    },
+
+    async getCourseList() {
+      const { COUNT } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: COUNT })
     }
   }
 }

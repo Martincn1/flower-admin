@@ -102,6 +102,13 @@ export const PRIZE_MODIFY_ENUM = {
   chance: 'chance'
 }
 
+// 图书兑换码
+export const EXCHANGE_MODIFY_ENUM = {
+  id: 'id',
+  day: 'day',
+  course_id: 'courseId'
+}
+
 // 提现记录 = 编辑
 export const WITH_DRAWAL_ENUM = {
   id: 'id',

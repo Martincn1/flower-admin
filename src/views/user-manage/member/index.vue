@@ -37,7 +37,6 @@
 
 <script>
 import SearchBar from './components/SearchBar.vue'
-import OperateBtn from './components/OperateBtn.vue'
 import ModifyDialog from './components/ModifyDialog.vue'
 import TimeDialog from './components/TimeDialog.vue'
 
@@ -60,8 +59,7 @@ export default {
   components: {
     SearchBar,
     ModifyDialog,
-    TimeDialog,
-    OperateBtn
+    TimeDialog
   },
   mixins: [listMixins],
   props: {},

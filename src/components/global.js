@@ -25,6 +25,7 @@ import HeaderBar from './HeaderBar'
 import ImageView from './ImageView'
 import AvatarUpload from './AvatarUpload'
 import BaseDatePicker from './BaseDatePicker'
+import OperateBtn from './OperateBtn'
 
 const components = [
   BaseSelect,
@@ -33,7 +34,8 @@ const components = [
   HeaderBar,
   ImageView,
   AvatarUpload,
-  BaseDatePicker
+  BaseDatePicker,
+  OperateBtn
 ]
 
 const install = (Vue) => {

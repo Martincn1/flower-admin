@@ -44,7 +44,8 @@ export default {
     prizeManageList: '奖品管理',
     recordList: '中奖记录',
     exchange: '图书兑换码管理',
-    exchangeList: '图书兑换码列表',
+    exchangeList: '图书兑换码',
+    exchangeRecord: '图书兑换记录',
     withdrawl: '提现记录',
 
     dashboard: '首页',

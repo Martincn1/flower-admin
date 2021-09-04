@@ -12,17 +12,15 @@
       label-width="120px"
       :rules="rules"
     >
-      <el-form-item label="奖品名称" prop="name">
-        <el-input v-model.trim="modifyForm.name" />
+      <el-form-item label="天数" prop="day">
+        <el-input v-model.trim="modifyForm.day" />
       </el-form-item>
-      <el-form-item label="奖品图片">
-        <avatar-upload :url.sync="modifyForm.img" :finish.sync="disabled" />
-      </el-form-item>
-      <el-form-item label="数量" prop="num">
-        <el-input v-model.trim="modifyForm.num" />
-      </el-form-item>
-      <el-form-item label="概率" prop="chance">
-        <el-input v-model.trim="modifyForm.chance" />
+      <el-form-item label="课程" prop="course_id">
+        <base-select
+          v-model="modifyForm.course_id"
+          :options="courseList"
+          :key-values="{value: 'id', label: 'name'}"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -36,9 +34,11 @@
 
 import { enumFormItemMap } from 'utils/util'
 
-import { PRIZE_MODIFY_ENUM } from 'config/fields/modify'
+import { EXCHANGE_MODIFY_ENUM } from 'config/fields/modify'
 
 import { mapState } from 'vuex'
+
+import { COMMON_REQUEST_ENUM } from 'config/common'
 
 export default {
   components: {},
@@ -54,7 +54,7 @@ export default {
   },
   data() {
     return {
-      modifyForm: enumFormItemMap(PRIZE_MODIFY_ENUM),
+      modifyForm: enumFormItemMap(EXCHANGE_MODIFY_ENUM),
       disabled: false
     }
   },
@@ -70,12 +70,16 @@ export default {
     },
     rules() {
       return {}
+    },
+    courseList() {
+      const { COUNT } = COMMON_REQUEST_ENUM
+      return this.remoteData[COUNT] || []
     }
   },
   watch: {
     modifyData: {
       handler(val) {
-        this.modifyForm = enumFormItemMap(PRIZE_MODIFY_ENUM, val)
+        this.modifyForm = enumFormItemMap(EXCHANGE_MODIFY_ENUM, val)
       },
       deep: true,
       immediate: true
