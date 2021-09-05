@@ -145,15 +145,15 @@ export default {
     },
     handleLogin() {
       this.$refs.loginForm.validate(async valid => {
-        if (valid) {
-          this.loading = true
-          await this.$store.dispatch('user/login', this.loginForm)
-          this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+        if (!valid) return
+        this.loading = true
+        const { success } = await this.$store.dispatch('user/login', this.loginForm)
+        if (!success) {
           this.loading = false
-        } else {
-          console.log('error submit!!')
-          return false
+          return
         }
+        this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+        this.loading = false
       })
     },
     getOtherQuery(query) {

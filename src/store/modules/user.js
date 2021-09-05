@@ -1,13 +1,25 @@
-import { logout, getInfo } from '@/api/user'
+import { logout } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 import { getLoginInfo } from 'api/admin/index.js'
+import { cloneDeep } from 'lodash'
+
+export const setUserInfo = (data) => {
+  localStorage.setItem('USER_DATA', JSON.stringify(data ?? {}))
+}
+
+export const getUserInfo = () => {
+  return JSON.parse(localStorage.getItem('USER_DATA')) ?? {}
+}
+
+export const removeUserInfo = () => {
+  localStorage.removeItem('USER_DATA')
+}
 
 const state = {
   token: getToken(),
-  name: '',
-  avatar: '',
+  userData: getUserInfo(),
   introduction: '',
   roles: []
 }
@@ -19,11 +31,9 @@ const mutations = {
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
+  SET_USERDATA: (state, userData) => {
+    setUserInfo(userData)
+    state.userData = cloneDeep(userData)
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
@@ -36,44 +46,52 @@ const actions = {
     const { account, pass } = userInfo
     const { _success, data } = await getLoginInfo({ account, pass })
     // TODO:根据返回提示对应信息
-    if (!_success) return
-    const { userData: { name, image }, token } = data
+    if (!_success) {
+      return {
+        success: _success,
+        data: data
+      }
+    }
+    const { userData, token } = data
     // TODO:暂时先按照这个结构写
-    commit('SET_NAME', name)
-    commit('SET_AVATAR', image)
+    commit('SET_USERDATA', userData)
     commit('SET_TOKEN', token)
     // TODO: 默认先绑定管理员权限
     commit('SET_ROLES', ['admin'])
     setToken(data.token)
+    return {
+      success: true,
+      data: null
+    }
   },
 
   // get user info
-  getInfo({ commit, state }) {
-    return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+  // getInfo({ commit, state }) {
+  //   return new Promise((resolve, reject) => {
+  //     getInfo(state.token).then(response => {
+  //       const { data } = response
 
-        if (!data) {
-          reject('Verification failed, please Login again.')
-        }
+  //       if (!data) {
+  //         reject('Verification failed, please Login again.')
+  //       }
 
-        const { roles, name, avatar, introduction } = data
+  //       const { roles, name, avatar, introduction } = data
 
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
+  //       // roles must be a non-empty array
+  //       if (!roles || roles.length <= 0) {
+  //         reject('getInfo: roles must be a non-null array!')
+  //       }
 
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        resolve(data)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  },
+  //       commit('SET_ROLES', roles)
+  //       commit('SET_NAME', name)
+  //       commit('SET_AVATAR', avatar)
+  //       commit('SET_INTRODUCTION', introduction)
+  //       resolve(data)
+  //     }).catch(error => {
+  //       reject(error)
+  //     })
+  //   })
+  // },
 
   // user logout 推出登录，重置一些必要数据TOKEN、ROLES
   logout({ commit, state, dispatch }) {
@@ -81,6 +99,7 @@ const actions = {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
+        commit('SET_USERDATA', {})
         removeToken()
         resetRouter()
 

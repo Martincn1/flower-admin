@@ -50,7 +50,7 @@ const request = async(method, url, data, {
     data: null,
     _err: err
   }))
-  // 是否需要驼峰妆化
+  // 是否需要驼峰转化
   if (isCamelCase) formatsArr = [keyToCamelCase, ...formats]
   return formatResponseData(resData, formatsArr)
 }

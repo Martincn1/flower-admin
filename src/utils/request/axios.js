@@ -1,6 +1,8 @@
 import axios from 'axios'
 import store from 'store'
 
+import { getToken } from '@/utils/auth'
+
 import ApiResponse from 'plugins/api-plugins/ApiResponse.class'
 import ApiError from 'plugins/api-plugins/ApiError.class'
 
@@ -15,11 +17,7 @@ axios.interceptors.response.use(function(response) {
   setTimeout(() => store.dispatch('requestLoading/setLoadingStatus', false), 300)
   const res = new ApiResponse(response)
   if (res.msg !== undefined) {
-    // 目前接口返回200，则必定有 msg，所以暂不考虑返回200，success=false 情况
     return res.msg
-  } else {
-    // 因又拍云图片上传需要，不包含msg字段，故全部返回
-    return res
   }
 }, async function(error) {
   setTimeout(
@@ -28,7 +26,6 @@ axios.interceptors.response.use(function(response) {
   )
   let message = error.message
   let code = 0
-
   if (error.response && error.response.data) {
     const resError = error.response.data
     message = resError.error_msg
@@ -50,9 +47,11 @@ axios.interceptors.request.use(
     // 读取配置中的接口请求url
     request.baseURL = process.env.VUE_APP_API_HOST
 
+    const token = getToken()
+
     // 设置请求头中token信息
-    if (localStorage.getItem('Authorization')) {
-      request.headers.Authorization = localStorage.getItem('Authorization')
+    if (token) {
+      request.headers.Authorization = token
     }
     return request
   },

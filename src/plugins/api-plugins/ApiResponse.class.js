@@ -17,23 +17,17 @@ class ApiResponse {
 
   __handleResponse() {
     const resData = this.response.data
-    // const url = this.response.config.url
 
     if (!resData) return
-
-    this.msg = resData.data
-
     if (resData.success && resData.success === true) {
+      this.msg = resData.data
       this.success = true
-
-      // 对 login 接口做特殊处理，拿到 hearders 里面的 token
-      // const loginUrlsReg = /(manage_auth\/login\/sso)|(manage_auth\/login\/dingtalk)/
-      // if (loginUrlsReg.test(url)) {
-      //   this.msg = {
-      //     msg: resData.msg,
-      //     token: this.response.headers['x-stream-id']
-      //   }
-      // }
+    } else {
+      this.msg = {
+        _success: false,
+        data: resData.message
+      }
+      this.success = false
     }
   }
 }

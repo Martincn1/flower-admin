@@ -46,6 +46,12 @@ export default {
           flexViewHeight: undefined // 优先级大于 flexView
         }
       }
+    },
+    adaptiveConfig: {
+      type: Object,
+      default: () => ({
+        bottomOffset: 30
+      })
     }
   },
   data() {
@@ -130,10 +136,13 @@ export default {
       }
       return this.$createElement(this.tableComponent.tableColumn, options)
     })
-
     const table = this.$createElement(this.tableComponent.table, {
       ref: 'table',
       props: this.computedTableProps,
+      directives: [{
+        name: 'adaptive',
+        value: this.adaptiveConfig
+      }],
       on: {
         ...this.tableEvents
       }

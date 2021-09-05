@@ -24,10 +24,14 @@ import GlobalComponents from 'components/global.js'
 
 import * as filters from './filters' // global filters
 
+import adaptive from '@/directive/el-table'
+
 import AudioPlayer from '@liripeng/vue-audio-player'
 import '@liripeng/vue-audio-player/lib/vue-audio-player.css'
 
 Vue.use(AudioPlayer)
+
+Vue.use(adaptive)
 
 /**
  * If you don't want to use mock-server

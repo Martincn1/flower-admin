@@ -6,7 +6,7 @@ export const tableProps = {
   stripe: true,
   emptyText: '当前暂无数据',
   border: true,
-  height: 500,
+  height: '100px',
   highlightCurrentRow: false,
   size: 'middle',
   headerRowStyle: { color: '#909399', backgroundColor: '#FAFAFA' },

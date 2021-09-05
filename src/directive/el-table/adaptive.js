@@ -23,8 +23,6 @@ const doResize = (el, binding, vnode) => {
   $table.$nextTick(() => {
     $table.layout.setHeight(height)
   })
-  // $table.layout.setHeight(height)
-  // $table.doLayout()
 }
 
 export default {
