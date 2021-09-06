@@ -3,7 +3,6 @@
     ref="form"
     :model="searchObj"
     inline
-    class="padding-16"
   >
     <el-form-item label="姓名" prop="name">
       <el-input v-model.trim="searchObj.name" placeholder="请输入老师姓名" clearable />

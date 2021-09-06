@@ -1,16 +1,16 @@
-import {
-  basicColumnField,
-  optionColumnField
-} from 'config/columns/index'
+import { formatNormalize } from '@/utils/filter'
 
-export default ({ modifyHandler }) => ([
-  basicColumnField({ prop: 'id', label: '编号' }),
-  basicColumnField({ prop: 'name', label: '名称' }),
-  basicColumnField({ prop: 'num', label: '所需积分' }),
-  optionColumnField({ label: '操作' }, [{
+import ColumnFieldClass from 'config/columns'
+
+export default ({ modifyHandler }) => ColumnFieldClass.generateField([
+  { type: 'base', prop: 'id', label: '编号', minWidth: 60 },
+  { type: 'base', prop: 'name', label: '名称', minWidth: 140, formatter: (row) => formatNormalize(row.name) },
+  { type: 'base', prop: 'num', label: '所需积分', minWidth: 100, formatter: (row) => formatNormalize(row.num) },
+  { type: 'operate', label: '操作', minWidth: 100, slots: [{
+    field: 'modifyBtn',
     type: 'primary',
     size: 'mini',
-    txt: '修改',
+    title: '修改',
     onEvent: modifyHandler
-  }])
+  }] }
 ])

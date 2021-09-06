@@ -1,129 +1,123 @@
 import { formatNormalize } from 'utils/filter'
 
+import ColumnFieldClass from 'config/columns'
+
+import { deleteBtn } from 'config/operate-button'
+
 import { SELECT_STATUS_MAP } from 'enums/common/index.js'
 
 export const idColumn = {
+  fixed: 'left',
+  type: 'base',
   prop: 'id',
   label: '编号',
+  minWidth: 60,
   formatter: (row) => formatNormalize(row.id)
 }
 
 export const userIdColumn = {
+  type: 'base',
   prop: 'userId',
   label: '用户id',
+  minWidth: 100,
   formatter: (row) => formatNormalize(row.userId)
 }
 
 export const imageColumn = {
+  type: 'image',
   prop: 'img',
   label: '作业图片',
-  scopedSlots: h => ({
-    default({ row }) {
-      return h('div', {
-        class: 'img-wrap'
-      }, [
-        h('image-view', {
-          class: 'image-view',
-          props: {
-            src: row.img,
-            fit: 'cover',
-            popover: !!row.img
-          }
-        })
-      ])
-    }
-  })
+  minWidth: 80
 }
 
 export const voiceColumn = {
+  type: 'voice',
   prop: 'voice',
   label: '点评语音',
-  scopedSlots: h => ({
-    default({ row }) {
-      return h('AudioPlayer', {
-        props: {
-          audioList: [row.voice],
-          'show-prev-button': false,
-          'show-next-button': false,
-          'isLoop': false
-        }
-      })
-    }
-  })
+  minWidth: 120
 }
 
 export const teacherIdColumn = {
+  type: 'base',
   prop: 'teacherId',
   label: '评论老师id',
-  formatter: (row) => formatNormalize(row.teacherId)
+  formatter: (row) => formatNormalize(row.teacherId),
+  minWidth: 100
 }
 
 export const commentTimeColumn = {
+  type: 'base',
   prop: 'commentTime',
   label: '点评时间',
-  formatter: (row) => formatNormalize(row.commentTime)
+  formatter: (row) => formatNormalize(row.commentTime),
+  minWidth: 160
 }
 
 export const courseBranchIdColumn = {
+  type: 'base',
   prop: 'courseBranchId',
   label: '课节id',
-  formatter: (row) => formatNormalize(row.courseBranchId)
+  formatter: (row) => formatNormalize(row.courseBranchId),
+  minWidth: 80
 }
 
 export const recommendTypeColumn = {
+  type: 'base',
   prop: 'isRecommend',
   label: '是否推荐',
-  formatter: (row) => formatNormalize(SELECT_STATUS_MAP[row.isRecommend])
+  formatter: (row) => formatNormalize(SELECT_STATUS_MAP[row.isRecommend]),
+  minWidth: 80
 }
 
 export const commentTypeColumn = {
+  type: 'base',
   prop: 'isComment',
   label: '是否评论',
-  formatter: (row) => formatNormalize(SELECT_STATUS_MAP[row.isComment])
+  formatter: (row) => formatNormalize(SELECT_STATUS_MAP[row.isComment]),
+  minWidth: 80
 }
 
 export const teacherColumn = {
+  type: 'base',
   prop: 'teacher',
   label: '评论老师',
-  formatter: (row) => formatNormalize(row.teacher.name)
+  formatter: (row) => formatNormalize(row.teacher.name),
+  minWidth: 80
 }
 
 export const userColumn = {
+  type: 'base',
   prop: 'user',
   label: '用户',
-  formatter: (row) => formatNormalize(row.user.name)
+  formatter: (row) => formatNormalize(row.user.name),
+  minWidth: 140
 }
 
 export const titleColumn = {
+  type: 'base',
   prop: 'title',
   label: '作业标题',
-  formatter: (row) => formatNormalize(row.title)
+  formatter: (row) => formatNormalize(row.title),
+  minWidth: 120
 }
 
 export const pushIdColumn = {
+  type: 'base',
   prop: 'pushId',
   label: '推送课程id',
+  minWidth: 120,
   formatter: (row) => formatNormalize(row.pushId)
 }
 
 export const optionsColumn = ({ deleteHandler }) => ({
+  fixed: 'right',
+  type: 'operate',
   label: '操作',
-  scopedSlots: h => ({
-    default({ row }) {
-      return h('el-button', {
-        props: {
-          type: 'danger',
-          size: 'mini'
-        },
-        on: {
-          click: () => deleteHandler(row.id)
-        }
-      }, '删除')
-    }
-  })
+  minWidth: 100,
+  slots: [deleteBtn(deleteHandler)]
 })
 
-export default (handlers) => ([
+export default ({ deleteHandler }) => ColumnFieldClass.generateField([
   idColumn,
   userIdColumn,
   imageColumn,
@@ -137,5 +131,5 @@ export default (handlers) => ([
   userColumn,
   titleColumn,
   pushIdColumn,
-  optionsColumn(handlers)
+  optionsColumn(deleteHandler)
 ])

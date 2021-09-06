@@ -7,6 +7,7 @@
       :fill-view-cofig="{flowView: '.app-wrapper'}"
       :table-props="tableProps"
       :column-config="columns"
+      :adaptive-config="{bottomOffset: 80}"
     />
     <pagination
       style="text-align: center;"
@@ -29,7 +30,6 @@
 
 <script>
 import ModifyDialog from './components/ModifyDialog.vue'
-import OperateBtn from './components/OperateBtn.vue'
 
 import listMixins from 'mixins/list-mixins'
 
@@ -37,14 +37,13 @@ import { tableProps } from 'config/columns/index.js'
 
 import Columns from './config/list-columns'
 
-import OperateBtnConfigs from './config/operate-btn'
+import { addBtn } from 'config/operate-button'
 
 import { getLevelList, addLevelInfo, updateLevelInfo } from 'api/common-manage/index.js'
 
 export default {
   components: {
-    ModifyDialog,
-    OperateBtn
+    ModifyDialog
   },
   mixins: [listMixins],
   data() {
@@ -72,13 +71,11 @@ export default {
       return Columns(handlers, { miniConfigList: this.miniConfigList })
     },
     operateConfigs() {
-      const handlers = {
-        addHelpHandler: () => {
-          this.modifyVisible = true
-          this.modifyData = {}
-        }
+      const addHelpHandler = () => {
+        this.modifyVisible = true
+        this.modifyData = {}
       }
-      return OperateBtnConfigs(handlers)
+      return [addBtn(addHelpHandler)]
     }
   },
   created() {

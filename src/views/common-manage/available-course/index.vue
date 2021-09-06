@@ -5,6 +5,7 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
+      :adaptive-config="{bottomOffset: 80}"
     />
     <pagination
       style="text-align: center;"

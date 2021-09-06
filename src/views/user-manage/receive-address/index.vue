@@ -56,7 +56,6 @@ export default {
   created() {
     this.fetchData()
   },
-  mounted() {},
   methods: {
     async changeStatus(val, row) {
       const { id } = row

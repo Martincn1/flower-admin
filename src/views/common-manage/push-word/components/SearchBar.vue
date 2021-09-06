@@ -3,7 +3,6 @@
     ref="form"
     :model="searchObj"
     inline
-    class="padding-16"
   >
     <el-form-item label="推送课程" prop="push_course_id">
       <base-select

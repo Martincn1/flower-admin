@@ -40,7 +40,7 @@ import listMixins from 'mixins/list-mixins'
 
 import Columns from './config/table/list-columns'
 
-import OperateBtnConfigs from './config/operate-btn'
+import { addBtn } from 'config/operate-button'
 
 import { cloneDeep } from 'lodash-es'
 
@@ -77,12 +77,10 @@ export default {
       return Columns(handlers)
     },
     operateConfigs() {
-      const handlers = {
-        addTeacherHandler: () => {
-          this.modifyVisible = true
-        }
+      const addTeacherHandler = () => {
+        this.modifyVisible = true
       }
-      return OperateBtnConfigs(handlers)
+      return [addBtn(addTeacherHandler, { icon: 'el-icon-plus' })]
     }
   },
   created() {

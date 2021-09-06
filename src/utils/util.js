@@ -103,7 +103,7 @@ export function enumFormItemMap(fields, target = {}, options = {}) {
     if (isEmpty(values)) {
       res[key] = target[values]?.[options?.[key]] ?? ''
     } else {
-      res[key] = target[values] ?? ''
+      res[key] = (+target[values] || target[values]) ?? ''
     }
   }
   return res

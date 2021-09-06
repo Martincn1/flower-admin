@@ -6,6 +6,7 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
+      :adaptive-config="{bottomOffset: 80}"
     />
     <pagination
       style="text-align: center;"
@@ -29,7 +30,6 @@
 <script>
 import SearchBar from './components/SearchBar.vue'
 import ModifyDialog from './components/ModifyDialog.vue'
-import OperateBtn from './components/OperateBtn.vue'
 
 import listMixins from 'mixins/list-mixins'
 
@@ -39,7 +39,7 @@ import Columns from './config/list-columns'
 
 import { cloneDeep } from 'lodash-es'
 
-import OperateBtnConfigs from './config/operate-btn'
+import { addBtn } from 'config/operate-button'
 
 import { COMMON_REQUEST_ENUM } from 'config/common'
 
@@ -50,8 +50,7 @@ import { mapActions } from 'vuex'
 export default {
   components: {
     SearchBar,
-    ModifyDialog,
-    OperateBtn
+    ModifyDialog
   },
   mixins: [listMixins],
   data() {
@@ -80,13 +79,11 @@ export default {
       return Columns(handlers)
     },
     operateConfigs() {
-      const handlers = {
-        addHelpHandler: () => {
-          this.modifyVisible = true
-          this.modifyData = {}
-        }
+      const addHelpHandler = () => {
+        this.modifyVisible = true
+        this.modifyData = {}
       }
-      return OperateBtnConfigs(handlers)
+      return [addBtn(addHelpHandler)]
     }
   },
   created() {

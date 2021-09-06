@@ -127,6 +127,29 @@ export default class ColumnFieldClass {
   }
 
   /**
+   *
+   * @example {*} config
+   */
+  static voice(config, slots) {
+    const { showPrevButton, showNextButton, isLoop } = slots ?? {}
+    return {
+      ...config,
+      scopedSlots: h => ({
+        default({ row }) {
+          return h('AudioPlayer', {
+            props: {
+              audioList: [row.voice],
+              'show-prev-button': showPrevButton || false,
+              'show-next-button': showNextButton || false,
+              'isLoop': isLoop || false
+            }
+          })
+        }
+      })
+    }
+  }
+
+  /**
    *@example {type: 'operate', label: ***, ... slots: [***]}
    */
   static operate(config, slots = []) {
