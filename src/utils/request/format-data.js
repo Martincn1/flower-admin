@@ -1,10 +1,7 @@
-import { Message } from 'element-ui'
-
 export const formatResponseData = (res, formats = []) => {
   const middlewares = [...formats]
   // 接口异常
   if (res?._success === false) {
-    Message.error(res.data)
     return res
   } else {
     // 返回数据类型 msg: null/false/''等格式的数据

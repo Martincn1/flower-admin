@@ -7,6 +7,8 @@
  * }
  */
 
+import { Message } from 'element-ui'
+
 class ApiResponse {
   constructor(response) {
     this.response = response || {} // 接口原返回 response
@@ -23,11 +25,12 @@ class ApiResponse {
       this.msg = resData.data
       this.success = true
     } else {
-      this.msg = {
-        _success: false,
-        data: resData.message
-      }
+      // TODO: 因为异常状态也是返回200,只能通过这里兼容处理下
+      Message.error(resData.message)
       this.success = false
+      this.msg = {
+        _success: false
+      }
     }
   }
 }
