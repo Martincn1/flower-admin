@@ -115,3 +115,11 @@ export const WITH_DRAWAL_ENUM = {
   is_pay: 'isPay',
   remarks: 'remarks'
 }
+
+// 课程管理 - 编辑
+export const COURSE_MODIFY_ENUM = {
+  id: 'id',
+  name: 'name',
+  img: 'img',
+  course_type_id: 'courseTypeId'
+}

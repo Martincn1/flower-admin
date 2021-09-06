@@ -40,6 +40,9 @@
 <script>
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { mapState } from 'vuex'
+import { enumFormItemMap } from 'utils/util'
+import { COURSE_MODIFY_ENUM } from 'config/fields/modify'
+import { isEmpty } from 'lodash-es'
 
 export default {
   components: {},
@@ -47,10 +50,15 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    addData: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
     return {
+      isEdit: false,
       disabled: false,
       addForm: {
         name: '',
@@ -92,7 +100,19 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    addData: {
+      handler(val) {
+        if (!isEmpty(val)) {
+          console.log(val, 'val')
+          this.isEdit = true
+          this.addForm = enumFormItemMap(COURSE_MODIFY_ENUM, val)
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
     typeChange(e) {
       console.log(e, 'e')
@@ -133,7 +153,12 @@ export default {
     submitForm() {
       this.$refs.addForm.validate((valid) => {
         if (!valid) return
-        this.$emit('on-add', this.addForm)
+        console.log(this.isEdit, 'this.isEdit')
+        if (this.isEdit) {
+          this.$emit('on-edit', this.addForm)
+        } else {
+          this.$emit('on-add', this.addForm)
+        }
       })
     }
   }
