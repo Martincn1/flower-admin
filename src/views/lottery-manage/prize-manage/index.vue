@@ -28,7 +28,6 @@
 
 <script>
 import ModifyDialog from './components/ModifyDialog.vue'
-import OperateBtn from './components/OperateBtn.vue'
 import SearchBar from './components/SearchBar.vue'
 
 import listMixins from 'mixins/list-mixins'
@@ -46,7 +45,6 @@ import { getPrizeList, addPrizeInfo, updatePrizeInfo, deletePrizeInfo } from 'ap
 export default {
   components: {
     ModifyDialog,
-    OperateBtn,
     SearchBar
   },
   mixins: [listMixins],
