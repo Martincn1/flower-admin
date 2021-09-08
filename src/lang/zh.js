@@ -47,6 +47,10 @@ export default {
     exchangeList: '图书兑换码',
     exchangeRecord: '图书兑换记录',
     withdrawl: '提现记录',
+    recordManage: '记录管理',
+    noText: '不存在文字记录',
+    likeRecord: '点赞记录',
+    attendRecord: '上课记录',
 
     dashboard: '首页',
     documentation: '文档',

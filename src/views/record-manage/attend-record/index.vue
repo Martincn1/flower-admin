@@ -1,5 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
+    <search-bar @on-search="searchHandler" />
     <table-render
       table-type="el-table"
       :table-props="tableProps"
@@ -17,26 +18,34 @@
 </template>
 
 <script>
-import { tableProps } from 'config/columns'
+import SearchBar from './components/SearchBar.vue'
+
+import { getClassLog } from 'api/record-manage'
+
+import { tableProps } from 'config/columns/index.js'
 
 import listMixins from 'mixins/list-mixins'
 
 import Columns from './config/list-columns'
 
-import { getWordFlowerList } from 'api/task-manage'
-
 export default {
+  components: {
+    SearchBar
+  },
   mixins: [listMixins],
-  props: {},
   data() {
     return {
-      list: []
+      searchObj: {},
+      list: [],
+      modifyVisible: false,
+      modifyData: {}
     }
   },
   computed: {
     tableProps() {
       return {
         ...tableProps,
+        border: true,
         data: this.list
       }
     },
@@ -44,7 +53,6 @@ export default {
       return Columns
     }
   },
-  watch: {},
   created() {
     this.fetchData()
   },
@@ -56,7 +64,7 @@ export default {
         pageSize,
         ...this.searchObj
       }
-      const { _success, data } = await getWordFlowerList(params)
+      const { _success, data } = await getClassLog(params)
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total

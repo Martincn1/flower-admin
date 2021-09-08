@@ -14,26 +14,26 @@ import { formatNormalize } from 'utils/filter'
 import { modifyBtn } from 'config/operate-button'
 
 export default ({ modifyHandler }) => ColumnFieldClass.generateField([
-  { type: 'base', prop: 'id', label: '编号' },
-  { type: 'tag', prop: 'status', label: '支付状态', slots: {
+  { type: 'base', prop: 'id', label: '编号', minWidth: 60, fixed: 'left' },
+  { type: 'tag', prop: 'status', label: '支付状态', minWidth: 100, slots: {
     styleMap: PAID_STATUS_STYLE, fieldMap: PAID_STATUS_MAP
   }},
-  { type: 'base', prop: 'realAmount', label: '实付商品总金额' },
-  { type: 'base', prop: 'orderNo', label: '订单号' },
-  { type: 'base', prop: 'payOrderNo', label: '三方支付单号' },
-  { type: 'base', prop: 'code', label: '物流单号' },
-  { type: 'base', prop: 'address', label: '地址' },
-  { type: 'base', prop: 'name', label: '购买用户' },
-  { type: 'base', prop: 'phone', label: '用户手机号' },
-  { type: 'base', prop: 'area', label: '地区', formatter: (row) => {
+  { type: 'base', prop: 'realAmount', label: '实付商品总金额', minWidth: 120 },
+  { type: 'base', prop: 'orderNo', label: '订单号', minWidth: 160 },
+  { type: 'base', prop: 'payOrderNo', label: '三方支付单号', minWidth: 120 },
+  { type: 'base', prop: 'code', label: '物流单号', minWidth: 160 },
+  { type: 'base', prop: 'address', label: '地址', minWidth: 160 },
+  { type: 'base', prop: 'name', label: '购买用户', minWidth: 120 },
+  { type: 'base', prop: 'phone', label: '用户手机号', minWidth: 120, formatter: (row) => formatNormalize(row.phone) },
+  { type: 'base', prop: 'area', label: '地区', minWidth: 140, formatter: (row) => {
     const { p, c, d } = row
     return formatNormalize(`${p}-${c}-${d}`)
   } },
-  { type: 'base', prop: 'isBiu', label: '是否发货', slots: { styleMap: SHIP_STATUS_STYLE, fieldMap: SHIP_STATUS_MAP }},
-  { type: 'base', prop: 'orderStatus', label: '订单状态', slots: { styleMap: ORDER_STATUS_STYLE, fieldMap: ORDER_STATUS_MAP }},
-  { type: 'base', prop: 'preferentialAmount', label: '优惠金额' },
-  { type: 'base', prop: 'goodsName', label: '商品名称' },
-  { type: 'base', prop: 'goodsMoney', label: '	商品价格' },
-  { type: 'image', prop: 'goodsImage', label: '商品图' },
-  { type: 'operate', label: '操作', slots: [modifyBtn(modifyHandler)] }
+  { type: 'base', prop: 'isBiu', label: '是否发货', minWidth: 100, slots: { styleMap: SHIP_STATUS_STYLE, fieldMap: SHIP_STATUS_MAP }},
+  { type: 'base', prop: 'orderStatus', label: '订单状态', minWidth: 100, slots: { styleMap: ORDER_STATUS_STYLE, fieldMap: ORDER_STATUS_MAP }},
+  { type: 'base', prop: 'preferentialAmount', label: '优惠金额', minWidth: 100 },
+  { type: 'base', prop: 'goodsName', label: '商品名称', minWidth: 120 },
+  { type: 'base', prop: 'goodsMoney', label: '	商品价格', minWidth: 100 },
+  { type: 'image', prop: 'goodsImage', label: '商品图', minWidth: 80 },
+  { type: 'operate', label: '操作', minWidth: 80, fixed: 'right', slots: [modifyBtn(modifyHandler)] }
 ])

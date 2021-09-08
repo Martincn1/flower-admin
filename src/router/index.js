@@ -25,6 +25,7 @@ import adminManageRouter from './modules/admin-manage'
 import permissionManageRouter from './modules/permission-manage'
 import lotteryManageRouter from './modules/lottery-manage'
 import exchangeManageRouter from './modules/exchange-manage'
+import recordManageRouter from './modules/record-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -108,7 +109,8 @@ export const constantRoutes = [
   adminManageRouter,
   permissionManageRouter,
   lotteryManageRouter,
-  exchangeManageRouter
+  exchangeManageRouter,
+  recordManageRouter
 ]
 
 /**

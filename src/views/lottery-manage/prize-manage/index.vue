@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
-    <search-bar @on-search="searchHandler" />-
+    <search-bar @on-search="searchHandler" />
     <operate-btn :operate-config="operateConfigs" class="margin-bottom-16" />
     <table-render
       table-type="el-table"
