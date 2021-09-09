@@ -12,16 +12,16 @@
       <base-select
         v-model="searchObj.courseType"
         placeholder="请选择课程"
-        :options="statusList"
-        :key-values="{value: 'code', label: 'label'}"
+        :options="courseList"
+        :key-values="{value: 'id', label: 'name'}"
       />
     </el-form-item>
     <el-form-item label="所属年级" prop="courseType">
       <base-select
         v-model="searchObj.courseType"
         placeholder="请选择年级"
-        :options="statusList"
-        :key-values="{value: 'code', label: 'label'}"
+        :options="gradeList"
+        :key-values="{value: 'id', label: 'name'}"
       />
     </el-form-item>
     <el-form-item>
@@ -33,9 +33,9 @@
 
 <script>
 import { enumObj2CodeLabArr } from 'utils/util'
-
 import { COMMON_STATUS_MAP } from 'enums/common/index'
-
+import { COMMON_REQUEST_ENUM } from 'config/common'
+import { mapState } from 'vuex'
 import searchMixins from 'mixins/search-mixins'
 
 export default {
@@ -48,9 +48,19 @@ export default {
     }
   },
   computed: {
+    ...mapState('commonRequest', ['remoteData']),
+    courseList() {
+      const { COUNT } = COMMON_REQUEST_ENUM
+      return this.remoteData[COUNT] ?? []
+    },
+    gradeList() {
+      const { GRADE } = COMMON_REQUEST_ENUM
+      return this.remoteData[GRADE] ?? []
+    },
     statusList() {
       return enumObj2CodeLabArr(COMMON_STATUS_MAP)
     }
+
   },
   watch: {},
   methods: {}

@@ -90,7 +90,7 @@ export default {
       const handlers = {
         addCourseHandler: this.addHandler,
         editCourseHandler: this.editHandler,
-        delCourseHandler: this.modifyEndAtHandler,
+        delCourseHandler: this.delHandler,
         checkCourseHandler: this.modifyEndAtHandler,
         generateCodeHandler: this.modifyEndAtHandler
       }
@@ -105,7 +105,6 @@ export default {
   methods: {
     ...mapActions('commonRequest', ['fetchSelectList']),
     async editCourse(val) {
-      console.log(val, 'val -- editCourse')
       const { _success } = await editCourse(val)
       if (!_success) return
       this.addCourseVisible = false
@@ -114,7 +113,6 @@ export default {
       this.modifyData = {}
     },
     async addCourse(val) {
-      console.log(val, 'val -- createCourse')
       const { _success } = await createCourse(val)
       if (!_success) return
       this.addCourseVisible = false
@@ -123,7 +121,6 @@ export default {
       this.modifyData = {}
     },
     selectionChange(selection) {
-      console.log(selection, 'selection -- selectionChange')
       this.selectedRows = selection
     },
     selectWarn() {
@@ -134,7 +131,9 @@ export default {
       }
       if (LEN !== 1) {
         this.$message.warning(warnEnum[+!!LEN])
-        return
+        return false
+      } else {
+        return true
       }
     },
     // 添加课程
@@ -144,20 +143,12 @@ export default {
     },
     // 修改课程
     editHandler() {
-      console.log(this.selectedRows, 'this.selectedRows')
-      const LEN = this.selectedRows.length
-      const warnEnum = {
-        0: '请选择一行数据',
-        1: '最多选择一行'
+      const ret = this.selectWarn()
+      if (ret) {
+        this.dialogTitle = '编辑'
+        this.addCourseVisible = true
+        this.modifyData = this.selectedRows[0]
       }
-      if (LEN !== 1) {
-        this.$message.warning(warnEnum[+!!LEN])
-        return
-      }
-      this.dialogTitle = '编辑'
-      this.addCourseVisible = true
-      this.modifyData = this.selectedRows[0]
-      console.log(this.modifyData, 'this.modifyData')
     },
     modifyEndAtHandler() {
       const LEN = this.selectedRows.length

@@ -18,5 +18,5 @@ export default ({ addCourseHandler, editCourseHandler, delCourseHandler, checkCo
   { type: 'base', prop: 'name', label: '课程名称' },
   { type: 'image', prop: 'img', label: '课程图片' },
   { type: 'base', prop: 'courseType', label: '课程类型', formatter: (row) => row.courseType.name },
-  { type: 'operate', label: '操作', width: 400, slots: [addBtn(addCourseHandler), modifyBtn(editCourseHandler), deleteBtn(delCourseHandler), examineBtn(checkCourseHandler, { title: '查看课节' }), generateCodeBtn(generateCodeHandler)] }
+  { type: 'operate', label: '操作', width: 450, slots: [addBtn(addCourseHandler), modifyBtn(editCourseHandler), deleteBtn(delCourseHandler), examineBtn(checkCourseHandler, { title: '查看课节' }), generateCodeBtn(generateCodeHandler)] }
 ])

@@ -12,37 +12,36 @@
       label-width="80px"
       :rules="rules"
     >
-      <el-form-item label="教师姓名" prop="name">
-        <el-input v-model="addForm.name" placeholder="请输入教师姓名" />
+      <el-form-item label="标题" prop="name">
+        <el-input v-model="addForm.title" placeholder="请输入标题" />
       </el-form-item>
-      <el-form-item label="账号" prop="number">
-        <el-input v-model="addForm.number" placeholder="请输入账号" />
-      </el-form-item>
-      <el-form-item label="密码" prop="pass">
-        <el-input
-          v-model="addForm.pass"
-          type="password"
-          placeholder="请输入密码"
-          autocomplete="off"
+      <el-form-item label="所属课程" prop="course_type_id">
+        <base-select
+          v-model="addForm.course_id"
+          placeholder="请选择课程"
+          :options="courseList"
+          :key-values="{value: 'id', label: 'name'}"
         />
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
-        <el-input
-          v-model="addForm.checkPass"
-          type="password"
-          placeholder="请确认密码"
-          autocomplete="off"
+      <el-form-item label="所属年级" prop="course_type_id">
+        <base-select
+          v-model="addForm.grade_id"
+          placeholder="请选择年级"
+          :options="gradeList"
+          :key-values="{value: 'id', label: 'name'}"
         />
       </el-form-item>
     </el-form>
     <template #footer>
       <el-button class="ml-8" @click="visibleDialog = false">取消</el-button>
-      <el-button type="primary" @click="submitForm">确定</el-button>
+      <el-button type="primary" @click="submitForm">确认提交</el-button>
     </template>
   </el-dialog>
 </template>
 
 <script>
+import { COMMON_REQUEST_ENUM } from 'config/common'
+import { mapState } from 'vuex'
 export default {
   components: {},
   props: {
@@ -54,14 +53,22 @@ export default {
   data() {
     return {
       addForm: {
-        name: '',
-        number: '',
-        pass: '',
-        checkPass: ''
+        title: '',
+        course_id: '',
+        grade_id: ''
       }
     }
   },
   computed: {
+    ...mapState('commonRequest', ['remoteData']),
+    courseList() {
+      const { COUNT } = COMMON_REQUEST_ENUM
+      return this.remoteData[COUNT] ?? []
+    },
+    gradeList() {
+      const { GRADE } = COMMON_REQUEST_ENUM
+      return this.remoteData[GRADE] ?? []
+    },
     visibleDialog: {
       get() {
         return this.visible
@@ -72,19 +79,9 @@ export default {
     },
     rules() {
       return {
-        name: [
-          { required: true, message: '请输入教师姓名', trigger: 'blur' },
+        title: [
+          { required: true, message: '请输入标题', trigger: 'blur' },
           { min: 2, max: 18, message: '长度在 2 到 18 个字符', trigger: 'blur' }
-        ],
-        number: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        pass: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-          { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' },
-          { validator: this.letterRule, trigger: 'blur' },
-          { validator: this.validatePass, trigger: 'blur' }
-        ],
-        checkPass: [
-          { validator: this.validateCheckPass, trigger: 'blur' }
         ]
       }
     }

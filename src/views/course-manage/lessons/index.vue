@@ -16,7 +16,7 @@
     />
     <add-dialog
       width="50%"
-      title="添加教师"
+      title="添加"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="addTeacherVisible"
@@ -36,7 +36,7 @@ import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
 import ColumnsConfig from './config/table/list-columns'
 import OperateBtnConfigs from './config/operate-btn'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { cloneDeep } from 'lodash-es'
 
 export default {
@@ -88,8 +88,11 @@ export default {
   watch: {},
   created() {
     this.fetchData()
+    this.getCourseList()
+    this.getGradeList()
   },
   methods: {
+    ...mapActions('commonRequest', ['fetchSelectList']),
     async changeStatus(val, row) {
       console.log(val, 'course -- val')
       console.log(row, 'course -- row')
@@ -106,6 +109,15 @@ export default {
       this.list = data.data
       console.log(this.list, 'this.list')
       this.pageObj.total = data.total
+    },
+    async getCourseList() {
+      const { COUNT } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: COUNT })
+    },
+    async getGradeList() {
+      const { GRADE } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: GRADE })
+      console.log(this.remoteData[GRADE], 'this.remoteData[GRADE]')
     }
     // async addTeacherEvent(obj) {
     //   const { _success } = await addTeacher(obj)
