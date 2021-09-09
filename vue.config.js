@@ -35,8 +35,7 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
-    },
-    before: require('./mock/mock-server.js')
+    }
   },
   css: {
     requireModuleExtension: true, // 开启CSSmodule, xxx.module.css

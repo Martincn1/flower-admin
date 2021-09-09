@@ -23,6 +23,7 @@ export default {
     ])
   },
   created() {
+    // TODO: 因为暂时无权限校验，所以默认都是admin
     if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
     }

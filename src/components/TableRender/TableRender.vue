@@ -50,7 +50,7 @@ export default {
     adaptiveConfig: {
       type: Object,
       default: () => ({
-        bottomOffset: 30
+        bottomOffset: 80
       })
     }
   },
