@@ -6,6 +6,7 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
+      :table-events="tableEvents"
     />
     <pagination
       style="text-align: center;"
@@ -16,10 +17,10 @@
     />
     <add-dialog
       width="50%"
-      title="添加教师"
+      :title="dialogTitle"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      :visible.sync="addTeacherVisible"
+      :visible.sync="addWordVisible"
     />
     <!-- @on-add="addTeacherEvent" -->
   </div>
@@ -30,7 +31,7 @@ import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 
-import { getWordList } from 'api/course-manage/characters.js'
+import { getWordList, createWord, editWord } from 'api/course-manage/characters.js'
 import listMixins from 'mixins/list-mixins'
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
@@ -48,10 +49,12 @@ export default {
   mixins: [listMixins],
   data() {
     return {
+      dialogTitle: '',
       searchObj: {},
       list: [],
-      addTeacherVisible: false,
-      modifyData: {}
+      addWordVisible: false,
+      modifyData: {},
+      selectedRows: []
     }
   },
   computed: {
@@ -67,6 +70,11 @@ export default {
         searchObj: {}
       }
     },
+    tableEvents() {
+      return {
+        'selection-change': this.selectionChange
+      }
+    },
     columns() {
       const handlers = {
         changeStatus: (val, row) => this.changeStatus(val, row),
@@ -79,9 +87,10 @@ export default {
     },
     operateConfigs() {
       const handlers = {
-        addTeacherHandler: () => {
-          this.addTeacherVisible = true
-        }
+        addWordHandler: this.addHandler,
+        editWordHandler: this.editHandler,
+        delWordHandler: this.delHandler,
+        checkWordHandler: this.modifyEndAtHandler
       }
       return OperateBtnConfigs(handlers)
     }
@@ -91,6 +100,51 @@ export default {
     this.fetchData()
   },
   methods: {
+    selectionChange(selection) {
+      this.selectedRows = selection
+    },
+    async editWord(val) {
+      const { _success } = await editWord(val)
+      if (!_success) return
+      this.addWordVisible = false
+      this.$message.success('修改成功')
+      this.fetchData()
+      this.modifyData = {}
+    },
+    async addWord(val) {
+      const { _success } = await createWord(val)
+      if (!_success) return
+      this.addWordVisible = false
+      this.$message.success('添加成功')
+      this.fetchData()
+      this.modifyData = {}
+    },
+    addHandler() {
+      this.dialogTitle = '添加'
+      this.addWordVisible = true
+    },
+    selectWarn() {
+      const LEN = this.selectedRows.length
+      const warnEnum = {
+        0: '请选择一行数据',
+        1: '最多选择一行'
+      }
+      if (LEN !== 1) {
+        this.$message.warning(warnEnum[+!!LEN])
+        return false
+      } else {
+        return true
+      }
+    },
+    // 修改课程
+    editHandler() {
+      const ret = this.selectWarn()
+      if (ret) {
+        this.dialogTitle = '编辑'
+        this.addWordVisible = true
+        this.modifyData = this.selectedRows[0]
+      }
+    },
     async changeStatus(val, row) {
       console.log(val, 'course -- val')
       console.log(row, 'course -- row')
@@ -107,14 +161,11 @@ export default {
       this.list = data.data
       console.log(this.list, 'this.list')
       this.pageObj.total = data.total
+    },
+    async getWordList() {
+      const { COUNT_BRANCH } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: COUNT_BRANCH })
     }
-    // async addTeacherEvent(obj) {
-    //   const { _success } = await addTeacher(obj)
-    //   if (!_success) return
-    //   this.addTeacherVisible = false
-    //   this.$message.success('新增成功')
-    //   this.fetchData()
-    // }
   }
 }
 </script>

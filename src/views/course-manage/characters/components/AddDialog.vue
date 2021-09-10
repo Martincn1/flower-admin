@@ -12,27 +12,26 @@
       label-width="80px"
       :rules="rules"
     >
-      <el-form-item label="教师姓名" prop="name">
-        <el-input v-model="addForm.name" placeholder="请输入教师姓名" />
+      <el-form-item label="文字" prop="title">
+        <el-input v-model="addForm.title" placeholder="请输入教师姓名" />
       </el-form-item>
-      <el-form-item label="账号" prop="number">
-        <el-input v-model="addForm.number" placeholder="请输入账号" />
-      </el-form-item>
-      <el-form-item label="密码" prop="pass">
+      <el-form-item class="course-photo" label="图片" prop="img">
         <el-input
-          v-model="addForm.pass"
-          type="password"
-          placeholder="请输入密码"
+          v-model="addForm.img"
+          type="text"
+          placeholder="请输入图片"
           autocomplete="off"
         />
+        <avatar-upload :url.sync="addForm.img" :finish.sync="disabled" />
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
+      <el-form-item class="course-photo" label="动态图片" prop="gif">
         <el-input
-          v-model="addForm.checkPass"
-          type="password"
-          placeholder="请确认密码"
+          v-model="addForm.gif"
+          type="text"
+          placeholder="请输入动态图片"
           autocomplete="off"
         />
+        <avatar-upload :url.sync="addForm.img" :finish.sync="disabled" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -43,6 +42,10 @@
 </template>
 
 <script>
+import { enumFormItemMap } from 'utils/util'
+import { WORD_MODIFY_ENUM } from 'config/fields/modify'
+import { isEmpty } from 'lodash-es'
+
 export default {
   components: {},
   props: {
@@ -89,7 +92,18 @@ export default {
       }
     }
   },
-  watch: {},
+  watch: {
+    addData: {
+      handler(val) {
+        if (!isEmpty(val)) {
+          this.isEdit = true
+          this.addForm = enumFormItemMap(WORD_MODIFY_ENUM, val)
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
     handlerClose() {
       this.$refs.addForm.resetFields()

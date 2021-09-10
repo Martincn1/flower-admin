@@ -104,7 +104,6 @@ export default {
     addData: {
       handler(val) {
         if (!isEmpty(val)) {
-          console.log(val, 'val')
           this.isEdit = true
           this.addForm = enumFormItemMap(COURSE_MODIFY_ENUM, val)
         }

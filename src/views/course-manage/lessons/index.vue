@@ -6,6 +6,7 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
+      :table-events="tableEvents"
     />
     <pagination
       style="text-align: center;"
@@ -16,10 +17,13 @@
     />
     <add-dialog
       width="50%"
-      title="添加"
+      :add-data="modifyData"
+      :title="dialogTitle"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      :visible.sync="addTeacherVisible"
+      :visible.sync="addLessonVisible"
+      @on-add="addLesson"
+      @on-edit="editLesson"
     />
     <!-- @on-add="addTeacherEvent" -->
   </div>
@@ -30,7 +34,7 @@ import SearchBar from './components/SearchBar.vue'
 import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 
-import { getCourseBranchList } from 'api/course-manage/lessons.js'
+import { getCourseBranchList, createCourseBranch, editCourseBranch } from 'api/course-manage/lessons.js'
 import listMixins from 'mixins/list-mixins'
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { tableProps } from 'config/columns/index.js'
@@ -48,10 +52,12 @@ export default {
   mixins: [listMixins],
   data() {
     return {
+      dialogTitle: null,
       searchObj: {},
       list: [],
-      addTeacherVisible: false,
-      modifyData: {}
+      addLessonVisible: false,
+      modifyData: {},
+      selectedRows: []
     }
   },
   computed: {
@@ -66,9 +72,13 @@ export default {
         data: this.list
       }
     },
+    tableEvents() {
+      return {
+        'selection-change': this.selectionChange
+      }
+    },
     columns() {
       const handlers = {
-        changeStatus: (val, row) => this.changeStatus(val, row),
         modifyHandler: (row) => {
           this.modifyData = cloneDeep(row)
           this.modifyVisible = true
@@ -78,9 +88,10 @@ export default {
     },
     operateConfigs() {
       const handlers = {
-        addTeacherHandler: () => {
-          this.addTeacherVisible = true
-        }
+        addLessonHandler: this.addHandler,
+        editLessonHandler: this.editHandler,
+        delLessonHandler: this.delHandler,
+        checkLessonHandler: this.modifyEndAtHandler
       }
       return OperateBtnConfigs(handlers)
     }
@@ -93,9 +104,50 @@ export default {
   },
   methods: {
     ...mapActions('commonRequest', ['fetchSelectList']),
-    async changeStatus(val, row) {
-      console.log(val, 'course -- val')
-      console.log(row, 'course -- row')
+    selectionChange(selection) {
+      this.selectedRows = selection
+    },
+    async editLesson(val) {
+      const { _success } = await editCourseBranch(val)
+      if (!_success) return
+      this.addLessonVisible = false
+      this.$message.success('修改成功')
+      this.fetchData()
+      this.modifyData = {}
+    },
+    async addLesson(val) {
+      const { _success } = await createCourseBranch(val)
+      if (!_success) return
+      this.addLessonVisible = false
+      this.$message.success('添加成功')
+      this.fetchData()
+      this.modifyData = {}
+    },
+    addHandler() {
+      this.dialogTitle = '添加'
+      this.addLessonVisible = true
+    },
+    selectWarn() {
+      const LEN = this.selectedRows.length
+      const warnEnum = {
+        0: '请选择一行数据',
+        1: '最多选择一行'
+      }
+      if (LEN !== 1) {
+        this.$message.warning(warnEnum[+!!LEN])
+        return false
+      } else {
+        return true
+      }
+    },
+    // 修改课程
+    editHandler() {
+      const ret = this.selectWarn()
+      if (ret) {
+        this.dialogTitle = '编辑'
+        this.addLessonVisible = true
+        this.modifyData = this.selectedRows[0]
+      }
     },
     async fetchData() {
       const { page, pageSize } = this.pageObj

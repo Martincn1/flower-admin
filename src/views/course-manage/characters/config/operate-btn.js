@@ -1,23 +1,23 @@
-export const addLessonBtn = (addLessonHandler) => ({
-  field: 'addLesson',
+export const addWordBtn = (addWordHandler) => ({
+  field: 'addWord',
   title: '添加',
   type: 'success',
   icon: 'el-icon-plus',
-  onEvent: () => addLessonHandler()
+  onEvent: () => addWordHandler()
 })
-export const editLessonBtn = (editLessonHandler) => ({
-  field: 'editLesson',
+export const editWordBtn = (editWordHandler) => ({
+  field: 'editWord',
   title: '修改',
   type: 'primary',
   icon: 'el-icon-edit-outline',
-  onEvent: () => editLessonHandler()
+  onEvent: () => editWordHandler()
 })
-export const delLessonBtn = (delLessonHandler) => ({
-  field: 'delLesson',
+export const delWordBtn = (delWordHandler) => ({
+  field: 'delWord',
   title: '删除',
   type: 'danger',
   icon: 'el-icon-delete',
-  onEvent: () => delLessonHandler()
+  onEvent: () => delWordHandler()
 })
 export const generateCodeBtn = (generateCodeHandler) => ({
   field: 'generateCode',
@@ -26,9 +26,9 @@ export const generateCodeBtn = (generateCodeHandler) => ({
   icon: 'el-icon-plus',
   onEvent: () => generateCodeHandler()
 })
-export default ({ addLessonHandler, editLessonHandler, delLessonHandler, generateCodeHandler }) => [
-  addLessonBtn(addLessonHandler),
-  editLessonBtn(editLessonHandler),
-  delLessonBtn(delLessonHandler),
+export default ({ addWordHandler, editWordHandler, delWordHandler, generateCodeHandler }) => [
+  addWordBtn(addWordHandler),
+  editWordBtn(editWordHandler),
+  delWordBtn(delWordHandler),
   generateCodeBtn(generateCodeHandler)
 ]

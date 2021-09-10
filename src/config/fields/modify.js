@@ -123,3 +123,20 @@ export const COURSE_MODIFY_ENUM = {
   img: 'img',
   course_type_id: 'courseTypeId'
 }
+
+// 课节管理 - 编辑
+export const COURSE_BRANCH_MODIFY_ENUM = {
+  id: 'id',
+  title: 'title',
+  grade_id: 'gradeId',
+  course_id: 'courseId'
+}
+
+// 文字管理 - 编辑
+export const WORD_MODIFY_ENUM = {
+  id: 'id',
+  title: 'title',
+  img: 'img',
+  gif: 'gif',
+  video: 'video'
+}

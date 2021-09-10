@@ -161,10 +161,6 @@ export default {
         return
       }
     },
-    async changeStatus(val, row) {
-      console.log(val, 'course -- val')
-      console.log(row, 'course -- row')
-    },
     async fetchData() {
       const { page, pageSize } = this.pageObj
       const params = {
@@ -177,13 +173,6 @@ export default {
       this.list = data.data
       this.pageObj.total = data.total
     },
-    // async addTeacherEvent(obj) {
-    //   const { _success } = await addTeacher(obj)
-    //   if (!_success) return
-    //   this.addTeacherVisible = false
-    //   this.$message.success('新增成功')
-    //   this.fetchData()
-    // },
     async getCourseTypeList() {
       const { COURSE_TYPE } = COMMON_REQUEST_ENUM
       await this.fetchSelectList({ type: COURSE_TYPE })

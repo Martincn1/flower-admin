@@ -12,10 +12,10 @@
       label-width="80px"
       :rules="rules"
     >
-      <el-form-item label="标题" prop="name">
+      <el-form-item label="标题" prop="title">
         <el-input v-model="addForm.title" placeholder="请输入标题" />
       </el-form-item>
-      <el-form-item label="所属课程" prop="course_type_id">
+      <el-form-item label="所属课程" prop="course_id">
         <base-select
           v-model="addForm.course_id"
           placeholder="请选择课程"
@@ -23,7 +23,7 @@
           :key-values="{value: 'id', label: 'name'}"
         />
       </el-form-item>
-      <el-form-item label="所属年级" prop="course_type_id">
+      <el-form-item label="所属年级" prop="grade_id">
         <base-select
           v-model="addForm.grade_id"
           placeholder="请选择年级"
@@ -42,16 +42,25 @@
 <script>
 import { COMMON_REQUEST_ENUM } from 'config/common'
 import { mapState } from 'vuex'
+import { enumFormItemMap } from 'utils/util'
+import { COURSE_BRANCH_MODIFY_ENUM } from 'config/fields/modify'
+import { isEmpty } from 'lodash-es'
+
 export default {
   components: {},
   props: {
     visible: {
       type: Boolean,
       default: false
+    },
+    addData: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
     return {
+      isEdit: false,
       addForm: {
         title: '',
         course_id: '',
@@ -82,11 +91,24 @@ export default {
         title: [
           { required: true, message: '请输入标题', trigger: 'blur' },
           { min: 2, max: 18, message: '长度在 2 到 18 个字符', trigger: 'blur' }
-        ]
+        ],
+        course_id: [{ required: true, message: '请选择课程', trigger: 'blur' }],
+        grade_id: [{ required: true, message: '请选择年级', trigger: 'blur' }]
       }
     }
   },
-  watch: {},
+  watch: {
+    addData: {
+      handler(val) {
+        if (!isEmpty(val)) {
+          this.isEdit = true
+          this.addForm = enumFormItemMap(COURSE_BRANCH_MODIFY_ENUM, val)
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
   methods: {
     handlerClose() {
       this.$refs.addForm.resetFields()
@@ -101,31 +123,15 @@ export default {
         callback()
       }
     },
-    validatePass(rule, value, callback) {
-      if (value === '') {
-        callback(new Error('请输入密码'))
-      } else {
-        if (this.addForm.checkPass !== '') {
-          this.$refs.addForm.validateField('checkPass')
-        }
-        callback()
-      }
-    },
-    validateCheckPass(rule, value, callback) {
-      if (!value) {
-        callback(new Error('请再次输入密码'))
-      } else if (value !== this.addForm.pass) {
-        callback(new Error('两次输入密码不一致!'))
-      } else {
-        callback()
-      }
-    },
-
     submitForm() {
       this.$refs.addForm.validate((valid) => {
         if (!valid) return
-        const { name, number, pass } = this.addForm
-        this.$emit('on-add', { name, number, pass })
+        console.log(this.isEdit, 'this.isEdit')
+        if (this.isEdit) {
+          this.$emit('on-edit', this.addForm)
+        } else {
+          this.$emit('on-add', this.addForm)
+        }
       })
     }
   }
