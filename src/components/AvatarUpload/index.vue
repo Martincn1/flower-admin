@@ -19,6 +19,8 @@
 <script>
 import { uploadFile } from 'api/common/index'
 
+import Compressor from 'compressorjs'
+
 export default {
   name: 'AvatarUpload',
   props: {
@@ -60,41 +62,51 @@ export default {
     },
 
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg'
-      const isLt2M = file.size / 1024 / 1024 < 5
+      const isJPG = file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/jpg'
+      const isLt5M = file.size / 1024 / 1024 < 5
 
       if (!isJPG) {
-        this.$message.error('上传头像图片只能是 JPG 格式!')
+        this.$message.error('上传头像图片格式不准确!')
       }
-      if (!isLt2M) {
+      if (!isLt5M) {
         this.$message.error('上传头像图片大小不能超过 5MB!')
       }
-      return isJPG && isLt2M
+      return isJPG && isLt5M
     },
 
-    async uploadImage(params) {
+    compressImg() {
+
+    },
+
+    uploadImage(params) {
       this.percentage = 0
       this.imageUrl = ''
-      const formData = new FormData()
-      const file = params.file
+      const _this = this
+      // 这里需要对图片进行压缩
+      new Compressor(params.file, {
+        quality: 0.4,
+        async success(result) {
+          const formData = new FormData()
+          const file = result
+          formData.append('file', file)
 
-      formData.append('file', file)
-
-      const { _success, data } = await uploadFile(formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-        onUploadProgress: ({ loaded, total }) => {
-          if (this.percentage !== 100) {
-            this.disabled = true
-            this.percentage = (loaded / total).toFixed(2) * 100 | 0
+          const { _success, data } = await uploadFile(formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+            onUploadProgress: ({ loaded, total }) => {
+              if (_this.percentage !== 100) {
+                _this.disabled = true
+                _this.percentage = (loaded / total).toFixed(2) * 100 | 0
+              }
+            }
+          })
+          if (!_success) {
+            _this.$message.error(data)
+            return
           }
+          _this.disabled = false
+          _this.imageUrl = data.url
         }
       })
-      if (!_success) {
-        this.$message.error(data)
-        return
-      }
-      this.disabled = false
-      this.imageUrl = data.url
     }
   }
 }
