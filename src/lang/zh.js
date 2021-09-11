@@ -51,6 +51,10 @@ export default {
     noText: '不存在文字记录',
     likeRecord: '点赞记录',
     attendRecord: '上课记录',
+    teacherReview: '教师审核',
+    teacherReviewList: '教师审核列表',
+    configuration: '配置相关',
+    configurationList: '配置列表',
 
     dashboard: '首页',
     documentation: '文档',

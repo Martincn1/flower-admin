@@ -20,6 +20,8 @@ import permissionManageRouter from './modules/permission-manage'
 import lotteryManageRouter from './modules/lottery-manage'
 import exchangeManageRouter from './modules/exchange-manage'
 import recordManageRouter from './modules/record-manage'
+import teacherReviewRouter from './modules/teacher-review'
+import configurationRouter from './modules/configuration-manage'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -104,7 +106,9 @@ export const constantRoutes = [
   permissionManageRouter,
   lotteryManageRouter,
   exchangeManageRouter,
-  recordManageRouter
+  recordManageRouter,
+  teacherReviewRouter,
+  configurationRouter
 ]
 
 const createRouter = () => new Router({

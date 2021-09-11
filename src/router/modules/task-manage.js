@@ -16,13 +16,13 @@ const homeworkeRouter = {
       path: 'list',
       component: () => import('views/task-manage/task'),
       name: 'taskList',
-      meta: { title: 'taskList', icon: 'documentation', affix: true }
+      meta: { title: 'taskList', icon: 'documentation' }
     },
     {
       path: 'honor',
       component: () => import('views/task-manage/honor'),
       name: 'honorList',
-      meta: { title: 'honorList', icon: 'documentation', affix: true }
+      meta: { title: 'honorList', icon: 'documentation' }
     }
   ]
 }

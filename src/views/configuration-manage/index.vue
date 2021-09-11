@@ -1,7 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading">
     <search-bar @on-search="searchHandler" />
-    <operate-btn :operate-config="operateConfigs" class="margin-bottom-16" />
     <table-render
       table-type="el-table"
       :table-props="tableProps"
@@ -14,48 +13,48 @@
       @current-change="currentChange"
       @size-change="changePageSize"
     />
-    <add-dialog
+    <modify-dialog
       width="50%"
-      title="添加教师"
+      title="修改"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       :visible.sync="modifyVisible"
       :modify-data="modifyData"
-      @on-add="addGradeEvent"
+      @on-add="modifyInfoHandler"
     />
   </div>
 </template>
 
 <script>
 import SearchBar from './components/SearchBar.vue'
-import OperateBtn from './components/OperateBtn.vue'
-import AddDialog from './components/AddDialog.vue'
-
-import { getGradeList, addGradeInfo, updateGradeInfo } from 'api/user-manage/grade.js'
-
-import { tableProps } from 'config/columns/index.js'
+import ModifyDialog from './components/ModifyDialog.vue'
 
 import listMixins from 'mixins/list-mixins'
 
-import Columns from './config/table/list-columns'
+import { tableProps } from 'config/columns/index.js'
 
-import { addBtn } from 'config/operate-button'
+import Columns from './config/list-columns'
 
-import { cloneDeep } from 'lodash-es'
+import { getAdminConfig, updateAdminConfigInfo } from 'api/configuration-manage'
+
+import { mapActions } from 'vuex'
+
+import { COMMON_REQUEST_ENUM } from 'config/common'
 
 export default {
   components: {
     SearchBar,
-    OperateBtn,
-    AddDialog
+    ModifyDialog
   },
   mixins: [listMixins],
+  props: {},
   data() {
     return {
       searchObj: {},
       list: [],
       modifyVisible: false,
       modifyData: {}
+
     }
   },
   computed: {
@@ -67,47 +66,35 @@ export default {
     },
     columns() {
       const handlers = {
-        changeStatus: (val, row) => this.changeStatus(val, row),
         modifyHandler: (row) => {
-          this.modifyData = cloneDeep(row)
+          this.modifyData = row
           this.modifyVisible = true
         }
       }
       return Columns(handlers)
-    },
-    operateConfigs() {
-      const addTeacherHandler = () => {
-        this.modifyVisible = true
-      }
-      return [addBtn(addTeacherHandler, { icon: 'el-icon-plus' })]
     }
   },
+  watch: {},
   created() {
     this.fetchData()
+    this.getTeacherList()
   },
+  mounted() {},
   methods: {
-
-    async changeStatus(val, row) {
-      const { id } = row
-      const { _success } = await updateGradeInfo({ id, status: val })
-      if (!_success) return
-      this.fetchData()
-      this.$message.success('修改成功')
-    },
-
-    async addGradeEvent(obj) {
-      const { id } = obj
-      const apiEnum = {
-        0: addGradeInfo,
-        1: updateGradeInfo
-      }
-      const { _success } = await apiEnum[+!!id](obj)
+    ...mapActions('commonRequest', ['fetchSelectList']),
+    // 修改人员信息
+    async modifyInfoHandler(obj) {
+      const { id, title } = obj
+      const { _success } = await updateAdminConfigInfo({ id, title })
       if (!_success) return
       this.modifyVisible = false
       this.$message.success('操作成功')
       this.fetchData()
     },
-
+    async getTeacherList() {
+      const { TEACHER } = COMMON_REQUEST_ENUM
+      await this.fetchSelectList({ type: TEACHER })
+    },
     async fetchData() {
       const { page, pageSize } = this.pageObj
       const params = {
@@ -115,7 +102,7 @@ export default {
         pageSize,
         ...this.searchObj
       }
-      const { _success, data } = await getGradeList(params)
+      const { _success, data } = await getAdminConfig(params)
       if (!_success) return
       this.list = data.data
       this.pageObj.total = data.total
@@ -123,3 +110,5 @@ export default {
   }
 }
 </script>
+<style scoped>
+</style>
