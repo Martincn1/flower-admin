@@ -60,3 +60,24 @@ export const ROLE_STATUS_MAP = {
 }
 
 export const ROLE_STATUS_LIST = enumObj2CodeLabArr(ROLE_STATUS_MAP)
+
+// 审核状态
+export const PROCESS_TYPE_ENUM = {
+  WAITING: 0,
+  SUCCESS: 1,
+  REJECT: 2
+}
+
+export const PROCESS_TYPE_MAP = {
+  [PROCESS_TYPE_ENUM.WAITING]: '待审核',
+  [PROCESS_TYPE_ENUM.SUCCESS]: '通过',
+  [PROCESS_TYPE_ENUM.REJECT]: '拒绝'
+}
+
+export const PROCESS_TYPE_STYLE = {
+  [PROCESS_TYPE_ENUM.WAITING]: 'warning',
+  [PROCESS_TYPE_ENUM.SUCCESS]: 'success',
+  [PROCESS_TYPE_ENUM.REJECT]: 'danger'
+}
+
+export const PROCESS_TYPE_LIST = enumObj2CodeLabArr(PROCESS_TYPE_MAP)

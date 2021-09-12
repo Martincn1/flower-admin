@@ -20,7 +20,7 @@
         <el-input v-model="addForm.number" placeholder="请输入账号" />
       </el-form-item>
       <el-form-item label="头像">
-        <avatar-upload :url.sync="addForm.image" :finish:sync="disabled" />
+        <avatar-upload :url.sync="addForm.image" :finish.sync="disabled" />
       </el-form-item>
       <el-form-item v-if="!addForm.id" label="密码" prop="pass">
         <el-input
@@ -57,17 +57,10 @@ import { COMMON_REQUEST_ENUM } from 'config/common'
 
 import { mapState, mapActions } from 'vuex'
 
-import { isEmpty, cloneDeep } from 'lodash-es'
+import { enumFormItemMap } from 'utils/util'
 
-const defaultFields = {
-  id: '',
-  name: '',
-  number: '',
-  pass: '',
-  image: '',
-  agent_id: '',
-  grade_id: ''
-}
+import { TEACHER_MODIFY_ENUM } from 'config/fields/modify'
+
 export default {
   components: {},
   props: {
@@ -82,7 +75,7 @@ export default {
   },
   data() {
     return {
-      addForm: { ...defaultFields },
+      addForm: enumFormItemMap(TEACHER_MODIFY_ENUM),
       disabled: false
     }
   },
@@ -123,12 +116,7 @@ export default {
   watch: {
     modifyData: {
       handler(val) {
-        if (isEmpty(val)) {
-          this.addForm = { ...defaultFields }
-        } else {
-          const { agent = {}, grades = {}, id, name, number, pass, image } = val
-          this.addForm = cloneDeep({ id, name, number, pass, image: image ?? '', agent_id: agent.id, grade_id: grades.id })
-        }
+        this.addForm = enumFormItemMap(TEACHER_MODIFY_ENUM, val)
       },
       deep: true,
       immediate: true
@@ -143,10 +131,6 @@ export default {
     handlerClose() {
       Object.assign(this.$data, this.$options.data())
       this.$refs.addForm.resetFields()
-    },
-    uploadSuccess(val) {
-      this.addForm.image = val
-      this.disabled = false
     },
     letterRule(rule, value, callback) {
       const reg = /^[a-zA-Z0-9_-]{4,18}$/

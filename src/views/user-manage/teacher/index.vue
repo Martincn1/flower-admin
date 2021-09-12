@@ -6,7 +6,6 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
-      :adaptive-config="{bottomOffset: 80}"
     />
     <pagination
       style="text-align: center;"
@@ -38,7 +37,6 @@
 
 <script>
 import SearchBar from './components/SearchBar.vue'
-import OperateBtn from './components/OperateBtn.vue'
 import AddDialog from './components/AddDialog.vue'
 import PassDialog from './components/PassDialog.vue'
 
@@ -50,14 +48,13 @@ import listMixins from 'mixins/list-mixins'
 
 import Columns from './config/table/list-columns'
 
-import OperateBtnConfigs from './config/operate-btn'
+import { addBtn } from 'config/operate-button'
 
 import { cloneDeep } from 'lodash-es'
 
 export default {
   components: {
     SearchBar,
-    OperateBtn,
     AddDialog,
     PassDialog
   },
@@ -75,6 +72,7 @@ export default {
     tableProps() {
       return {
         ...tableProps,
+        border: true,
         data: this.list
       }
     },
@@ -93,13 +91,11 @@ export default {
       return Columns(handlers)
     },
     operateConfigs() {
-      const handlers = {
-        addTeacherHandler: () => {
-          this.modifyData = {}
-          this.addTeacherVisible = true
-        }
+      const addTeacherHandler = () => {
+        this.modifyData = {}
+        this.addTeacherVisible = true
       }
-      return OperateBtnConfigs(handlers)
+      return [addBtn(addTeacherHandler)]
     }
   },
   created() {

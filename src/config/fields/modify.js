@@ -15,6 +15,16 @@ export const MEMBER_MODIFY_ENUM = {
   'line': 'line'
 }
 
+// 老师管理
+export const TEACHER_MODIFY_ENUM = {
+  id: 'id',
+  name: 'name',
+  number: 'number',
+  pass: 'pass',
+  image: 'image',
+  agent_id: 'agentId',
+  grade_id: 'gradeId'
+}
 // 订单管理 - 修改
 export const ORDER_MODIFY_ENUM = {
   id: 'id',

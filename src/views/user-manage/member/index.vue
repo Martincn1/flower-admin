@@ -7,7 +7,6 @@
       :table-props="tableProps"
       :column-config="columns"
       :table-events="tableEvents"
-      :adaptive-config="{bottomOffset: 80}"
     />
     <pagination
       style="text-align: center;"

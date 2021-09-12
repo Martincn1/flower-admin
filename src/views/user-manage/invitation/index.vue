@@ -5,7 +5,6 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
-      :adaptive-config="{bottomOffset: 78}"
     />
   </div>
 </template>

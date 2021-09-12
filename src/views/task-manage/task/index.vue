@@ -19,7 +19,7 @@
 <script>
 import SearchBar from './components/SearchBar.vue'
 
-import { tableProps } from 'config/columns/index.js'
+import { tableProps } from 'config/columns'
 
 import listMixins from 'mixins/list-mixins'
 
@@ -27,7 +27,7 @@ import Columns from './config/list-columns'
 
 import { COMMON_REQUEST_ENUM } from 'config/common'
 
-import { getTaskList, deleteTask } from 'api/task-manage/index.js'
+import { getTaskList, deleteTask } from 'api/task-manage'
 
 import { mapActions } from 'vuex'
 

@@ -12,13 +12,13 @@ export default ({ changeStatus, modifyHandler, modifyPassHandler }) => ColumnFie
   { type: 'switch', prop: 'status', label: '状态', minWidth: 80, slots: {
     activeValue: COMON_STATUS_ENUM.NORMAL,
     inactiveValue: COMON_STATUS_ENUM.DISABLED,
-    events: changeStatus
+    event: changeStatus
   }},
   { type: 'base', prop: 'number', label: '账号', minWidth: 100 },
   { type: 'base', prop: 'money', label: '可提现金额', minWidth: 80 },
   { type: 'base', prop: 'num', label: '点评作业数', minWidth: 80 },
   { type: 'base', prop: 'agent', label: '经销商', minWidth: 120, formatter: (row) => formatNormalize(row?.agent?.name) },
-  { type: 'base', prop: 'grades', label: '负责的年级组', minWidth: 100, formatter: (row) => formatNormalize(row?.grades?.name) },
+  { type: 'base', prop: 'grade', label: '负责的年级组', minWidth: 120, formatter: (row) => formatNormalize(row?.grades?.name) },
   { type: 'operate', label: '操作', fixed: 'right', minWidth: 140, slots: [
     modifyBtn(modifyHandler),
     {

@@ -3,7 +3,6 @@
     ref="form"
     :model="searchObj"
     inline
-    class="padding-16"
   >
     <el-form-item label="收货人姓名" prop="name">
       <el-input v-model.trim="searchObj.name" placeholder="请输入收货人姓名" clearable />

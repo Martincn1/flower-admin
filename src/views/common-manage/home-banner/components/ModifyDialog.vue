@@ -21,7 +21,7 @@
         />
       </el-form-item>
       <el-form-item label="头像">
-        <avatar-upload :url.sync="modifyForm.image" :finish:sync="disabled" />
+        <avatar-upload :url.sync="modifyForm.image" :finish.sync="disabled" />
       </el-form-item>
       <el-form-item label="路由" prop="route">
         <el-input v-model.trim="modifyForm.route" />

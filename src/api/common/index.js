@@ -58,3 +58,10 @@ export function getWordList(params, globalLoading = false) {
     globalLoading
   })
 }
+
+// 后台管理员下拉列表
+export function getAdminList(params, globalLoading = false) {
+  return axios.get('/admin/AdminSelect', { params }, {
+    globalLoading
+  })
+}

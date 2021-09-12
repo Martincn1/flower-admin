@@ -3,7 +3,6 @@
     ref="form"
     :model="searchObj"
     inline
-    class="padding-16"
   >
     <el-form-item label="电话号码" prop="phone">
       <el-input v-model.trim="searchObj.phone" placeholder="请输入电话号码" clearable />

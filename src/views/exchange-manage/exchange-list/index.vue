@@ -27,8 +27,6 @@
 
 <script>
 import ModifyDialog from './components/ModifyDialog.vue'
-import OperateBtn from './components/OperateBtn.vue'
-
 import listMixins from 'mixins/list-mixins'
 
 import { addBtn } from 'config/operate-button'
@@ -45,8 +43,7 @@ import { COMMON_REQUEST_ENUM } from 'config/common'
 
 export default {
   components: {
-    ModifyDialog,
-    OperateBtn
+    ModifyDialog
   },
   mixins: [listMixins],
   data() {

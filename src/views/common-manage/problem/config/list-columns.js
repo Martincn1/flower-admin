@@ -1,22 +1,23 @@
-import {
-  basicColumnField,
-  optionColumnField
-} from 'config/columns/index'
+import { formatNormalize } from 'utils/filter'
 
-export default ({ modifyHandler, deleteHandler }) => ([
-  basicColumnField({ prop: 'id', label: '编号' }),
-  basicColumnField({ prop: 'title', label: '标题' }),
-  basicColumnField({ prop: 'answer', label: '回答' }),
-  basicColumnField({ prop: 'createdAt', label: '创建时间' }),
-  optionColumnField({ label: '操作' }, [{
+import ColumnFieldClass from 'config/columns'
+
+export default ({ modifyHandler, deleteHandler }) => ColumnFieldClass.generateField([
+  { type: 'base', prop: 'id', label: '编号', minWidth: 60, fixed: 'left' },
+  { type: 'base', prop: 'title', label: '标题', minWidth: 100, formatter: (row) => formatNormalize(row.title) },
+  { type: 'base', prop: 'answer', label: '回答', minWidth: 120, formatter: (row) => formatNormalize(row.answer) },
+  { type: 'base', prop: 'createdAt', label: '创建时间', minWidth: 160, formatter: (row) => formatNormalize(row.createdAt) },
+  { type: 'operate', label: '操作', minWidth: 100, slots: [{
+    field: 'modifyBtn',
     type: 'primary',
     size: 'mini',
-    txt: '修改',
+    title: '修改',
     onEvent: modifyHandler
   }, {
+    field: 'deleteBtn',
     type: 'danger',
     size: 'mini',
-    txt: '删除',
+    title: '删除',
     onEvent: deleteHandler
-  }])
+  }] }
 ])

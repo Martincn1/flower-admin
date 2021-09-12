@@ -5,7 +5,6 @@
       table-type="el-table"
       :table-props="tableProps"
       :column-config="columns"
-      :adaptive-config="{bottomOffset: 80}"
     />
     <pagination
       style="text-align: center;"
@@ -56,7 +55,6 @@ export default {
   created() {
     this.fetchData()
   },
-  mounted() {},
   methods: {
     async changeStatus(val, row) {
       const { id } = row

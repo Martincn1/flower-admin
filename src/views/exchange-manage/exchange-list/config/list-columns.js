@@ -5,7 +5,7 @@ import { deleteBtn } from 'config/operate-button'
 
 import { SELECT_STATUS_MAP } from 'enums/common'
 
-export default ({ modifyHandler, deleteHandler }) => ColumnFieldClass.generateField([
+export default ({ deleteHandler }) => ColumnFieldClass.generateField([
   { type: 'base', prop: 'id', label: '编号' },
   { type: 'base', prop: 'code', label: '兑换码' },
   { type: 'base', prop: 'day', label: '天数' },
